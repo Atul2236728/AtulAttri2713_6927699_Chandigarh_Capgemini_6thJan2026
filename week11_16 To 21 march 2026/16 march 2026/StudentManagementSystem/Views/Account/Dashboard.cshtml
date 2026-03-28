@@ -1,0 +1,61 @@
+﻿<div class="container mt-5">
+
+    <h2 class="text-center text-primary mb-4">
+        Student Portal Dashboard
+    </h2>
+
+    <p class="text-center text-muted">
+        Welcome, @ViewBag.Username 👋
+    </p>
+
+    <div class="row mt-4">
+
+        <!-- Student Module -->
+        <div class="col-md-4">
+            <div class="card shadow p-4 text-center">
+
+                <h4>🎓 Students</h4>
+                <p class="text-muted">Register and manage students</p>
+
+                <a asp-controller="Student"
+                   asp-action="Register"
+                   class="btn btn-primary">
+                    Go to Students
+                </a>
+
+            </div>
+        </div>
+
+        <!-- Product Module -->
+        <div class="col-md-4">
+            <div class="card shadow p-4 text-center">
+
+                <h4>🛍 Products</h4>
+                <p class="text-muted">Manage product modules</p>
+
+                <a asp-controller="Product"
+                   asp-action="Index"
+                   class="btn btn-primary">
+                    Go to Products
+                </a>
+
+            </div>
+        </div>
+
+        <!-- Profile / Info -->
+        <div class="col-md-4">
+            <div class="card shadow p-4 text-center">
+
+                <h4>👤 Profile</h4>
+                <p class="text-muted">Logged in as @ViewBag.Username</p>
+
+                <button class="btn btn-secondary">
+                    Active User
+                </button>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>

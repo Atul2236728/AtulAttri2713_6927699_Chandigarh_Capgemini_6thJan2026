@@ -1,0 +1,44 @@
+﻿@model StudentManagementSystem.Models.Student
+
+<form asp-action="@(Model.Id == 0 ? "Create" : "Edit")" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="modal-header">
+        <h5 class="modal-title">Student Form</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
+
+    <div class="modal-body">
+
+        <div class="mb-3">
+            <label>Name</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label>Email</label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label>Course</label>
+            <input asp-for="Course" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Joining Date</label>
+            <input asp-for="JoiningDate" type="date" class="form-control" />
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-success">Save</button>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

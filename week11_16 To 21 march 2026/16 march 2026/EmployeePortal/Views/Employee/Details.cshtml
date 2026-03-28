@@ -1,0 +1,27 @@
+﻿@model EmployeePortal.Models.Employee
+
+<div class="container mt-5">
+
+    <!-- SUCCESS MESSAGE -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success text-center">
+            @TempData["Success"]
+        </div>
+    }
+
+    <div class="card shadow p-4">
+        <h3 class="text-primary">Employee Details</h3>
+        <hr />
+
+        <p><strong>ID:</strong> @Model.Id</p>
+        <p><strong>Name:</strong> @Model.Name</p>
+        <p><strong>Age:</strong> @Model.Age</p>
+        <p><strong>Email:</strong> @Model.Email</p>
+        <p><strong>Department:</strong> @Model.Department</p>
+
+        <a asp-controller="Employee" asp-action="Register" class="btn btn-primary mt-3">
+            Add Another Employee
+        </a>
+    </div>
+</div>

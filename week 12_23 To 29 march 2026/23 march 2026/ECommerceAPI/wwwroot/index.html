@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>E-Commerce Admin Panel</title>
+
+    <!-- Bootstrap + Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f6f9;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            height: 100vh;
+            background: #1e293b;
+            color: white;
+            padding: 20px;
+            position: fixed;
+            width: 220px;
+        }
+
+            .sidebar h3 {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+
+            .sidebar a {
+                display: block;
+                color: #cbd5e1;
+                padding: 10px;
+                margin: 10px 0;
+                text-decoration: none;
+                border-radius: 8px;
+                transition: 0.3s;
+            }
+
+                .sidebar a:hover {
+                    background: #334155;
+                    color: white;
+                }
+
+        /* Main content */
+        .main {
+            margin-left: 240px;
+            padding: 30px;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0px 4px 20px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+
+            .card:hover {
+                transform: translateY(-5px);
+            }
+
+        .icon-box {
+            font-size: 30px;
+            padding: 15px;
+            border-radius: 10px;
+            color: white;
+        }
+
+        .bg-blue {
+            background: #3b82f6;
+        }
+
+        .bg-green {
+            background: #22c55e;
+        }
+
+        .bg-yellow {
+            background: #f59e0b;
+        }
+
+        .bg-red {
+            background: #ef4444;
+        }
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: gray;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h3>🛒 Admin</h3>
+
+        <a href="/swagger"><i class="bi bi-gear"></i> Swagger</a>
+        <a href="/api/Product"><i class="bi bi-box"></i> Products</a>
+        <a href="/api/Customer"><i class="bi bi-people"></i> Customers</a>
+        <a href="/api/Order"><i class="bi bi-cart"></i> Orders</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+
+        <!-- Header -->
+        <div class="header">
+            <h2>Dashboard</h2>
+            <p>Welcome to your E-Commerce API control panel</p>
+        </div>
+
+        <!-- Cards -->
+        <div class="row g-4">
+
+            <!-- Swagger -->
+            <div class="col-md-3">
+                <div class="card p-3">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6>API Testing</h6>
+                            <h4>Swagger</h4>
+                        </div>
+                        <div class="icon-box bg-blue">
+                            <i class="bi bi-gear-fill"></i>
+                        </div>
+                    </div>
+                    <a href="/swagger" class="btn btn-outline-primary mt-3">Open</a>
+                </div>
+            </div>
+
+            <!-- Products -->
+            <div class="col-md-3">
+                <div class="card p-3">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6>Inventory</h6>
+                            <h4>Products</h4>
+                        </div>
+                        <div class="icon-box bg-green">
+                            <i class="bi bi-box-seam"></i>
+                        </div>
+                    </div>
+                    <a href="/api/Product" class="btn btn-outline-success mt-3">View</a>
+                </div>
+            </div>
+
+            <!-- Customers -->
+            <div class="col-md-3">
+                <div class="card p-3">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6>Users</h6>
+                            <h4>Customers</h4>
+                        </div>
+                        <div class="icon-box bg-yellow">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+                    </div>
+                    <a href="/api/Customer" class="btn btn-outline-warning mt-3">View</a>
+                </div>
+            </div>
+
+            <!-- Orders -->
+            <div class="col-md-3">
+                <div class="card p-3">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6>Sales</h6>
+                            <h4>Orders</h4>
+                        </div>
+                        <div class="icon-box bg-red">
+                            <i class="bi bi-cart-check"></i>
+                        </div>
+                    </div>
+                    <a href="/api/Order" class="btn btn-outline-danger mt-3">View</a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2026 E-Commerce API | Built with ASP.NET Core</p>
+        </div>
+
+    </div>
+
+</body>
+</html>

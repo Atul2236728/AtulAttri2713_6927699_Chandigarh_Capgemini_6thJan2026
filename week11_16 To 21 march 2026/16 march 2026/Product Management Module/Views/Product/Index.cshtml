@@ -1,0 +1,50 @@
+﻿@model List<string>
+
+@{
+    ViewData["Title"] = "Product List";
+}
+
+<div class="container mt-5">
+
+    <div class="text-center mb-4">
+        <h2 class="product-title">Product Management</h2>
+        <p class="product-subtitle">
+            Manage and view available products
+        </p>
+    </div>
+
+    <div class="row">
+
+        @foreach (var product in Model)
+        {
+            <div class="col-md-3 mb-4">
+
+                <div class="card product-card shadow-sm">
+
+                    <div class="card-body text-center">
+
+                        <div class="product-icon mb-3">
+                            🛒
+                        </div>
+
+                        <h5 class="card-title">
+                            @product
+                        </h5>
+
+                        <a asp-controller="Product"
+                           asp-action="Details"
+                           asp-route-name="@product"
+                           class="btn btn-soft">
+                            View Product
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+</div>

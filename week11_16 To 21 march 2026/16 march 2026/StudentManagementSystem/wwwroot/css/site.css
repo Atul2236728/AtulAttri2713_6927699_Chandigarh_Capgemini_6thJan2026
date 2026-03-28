@@ -1,0 +1,16 @@
+body {
+    background: linear-gradient(135deg, #eef2f7, #ffffff);
+}
+
+.card {
+    border-radius: 12px;
+    transition: 0.3s;
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+.navbar {
+    font-weight: 500;
+}

@@ -1,0 +1,32 @@
+@page
+@model ProductClient.Pages.ApiHealthModel
+@{
+    ViewData["Title"] = "API Health Check";
+}
+
+<h2>API Health Check</h2>
+
+@if (Model.IsHealthy)
+{
+    <div class="alert alert-success">
+        <strong>Status:</strong> @Model.Status
+    </div>
+    <p><strong>Timestamp:</strong> @Model.Timestamp</p>
+    <p><strong>Version:</strong> @Model.Version</p>
+    <h5>Available Endpoints</h5>
+    <ul>
+        @foreach (var ep in Model.Endpoints)
+        {
+            <li><code>@ep</code></li>
+        }
+    </ul>
+}
+else
+{
+    <div class="alert alert-danger">
+        <strong>API is unreachable.</strong> Make sure ProductApi is running on <code>http://localhost:5000</code>.
+    </div>
+    <p>Error: @Model.ErrorMessage</p>
+}
+
+<a class="btn btn-secondary mt-3" href="/">Back to Home</a>

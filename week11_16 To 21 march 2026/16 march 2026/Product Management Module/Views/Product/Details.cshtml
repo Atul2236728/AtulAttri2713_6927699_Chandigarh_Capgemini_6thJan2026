@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Product Details";
+}
+
+<div class="container mt-5 text-center">
+
+    <h2 class="text-primary mb-4">Product Details</h2>
+
+    <div class="card shadow-lg p-5">
+
+        <h3 class="mb-3">@ViewBag.ProductName</h3>
+
+        <p class="text-muted">
+            Available brands for this product:
+        </p>
+
+        <div class="row justify-content-center">
+
+            @foreach (var brand in ViewBag.Brands)
+            {
+                <div class="col-md-3 mb-3">
+
+                    <div class="card shadow-sm p-3">
+
+                        <h5 class="text-secondary">
+                            @brand
+                        </h5>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+        <a asp-controller="Product"
+           asp-action="Index"
+           class="btn btn-secondary mt-4">
+            Back to Products
+        </a>
+
+    </div>
+
+</div>

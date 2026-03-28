@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container mt-5 text-center">
+
+    <div class="card shadow-lg p-5">
+
+        <!-- Login Success Message -->
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["Success"]
+            </div>
+        }
+
+        <h2 class="text-success">
+            Welcome, @ViewBag.Username 👋
+        </h2>
+
+        <p class="text-muted mt-3">
+            You are successfully logged in using session-based authentication.
+        </p>
+
+        <div class="mt-4">
+            <a asp-controller="Account"
+               asp-action="Logout"
+               class="btn btn-danger">
+                Logout
+            </a>
+        </div>
+
+    </div>
+
+</div>

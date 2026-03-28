@@ -1,0 +1,25 @@
+﻿@model ProductCatalogApp.Models.Product
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="row g-0">
+
+            <div class="col-md-6">
+                <img src="@Model.ImageUrl" class="img-fluid rounded-start" />
+            </div>
+
+            <div class="col-md-6">
+                <div class="card-body">
+                    <h3>@Model.Name</h3>
+                    <p>@Model.Description</p>
+                    <h4 class="text-success">₹@Model.Price</h4>
+
+                    <a href="/Products" class="btn btn-secondary mt-3">
+                        Back
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

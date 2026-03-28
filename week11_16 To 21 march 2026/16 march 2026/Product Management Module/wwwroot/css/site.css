@@ -1,0 +1,46 @@
+/* Soft gradient background */
+body {
+    background: linear-gradient(135deg, #f5f7fa, #e4e7eb);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Title styling */
+.product-title {
+    font-size: 36px;
+    color: #3a3a3a;
+    font-weight: 500;
+}
+
+.product-subtitle {
+    color: #7a7a7a;
+}
+
+/* Product card */
+.product-card {
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+    /* Hover animation */
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+    }
+
+/* Product icon */
+.product-icon {
+    font-size: 40px;
+}
+
+/* Button style */
+.btn-soft {
+    background-color: #5a8dee;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    padding: 8px 16px;
+}
+
+    .btn-soft:hover {
+        background-color: #4a7bd0;
+    }

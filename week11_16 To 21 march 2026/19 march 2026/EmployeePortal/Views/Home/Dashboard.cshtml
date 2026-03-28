@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Dashboard</h2>
+
+    <h5 class="text-muted">Welcome, @User.Identity.Name 👋</h5>
+
+    <div class="row mt-4">
+
+        <!-- Total Employees -->
+        <div class="col-md-4">
+            <div class="card text-white bg-primary shadow">
+                <div class="card-body">
+                    <h5>Total Employees</h5>
+                    <h2>@ViewBag.TotalEmployees</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Departments -->
+        <div class="col-md-4">
+            <div class="card text-white bg-success shadow">
+                <div class="card-body">
+                    <h5>Total Departments</h5>
+                    <h2>@ViewBag.TotalDepartments</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logged User -->
+        <div class="col-md-4">
+            <div class="card text-white bg-dark shadow">
+                <div class="card-body">
+                    <h5>Logged in as</h5>
+                    <h6>@User.Identity.Name</h6>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
