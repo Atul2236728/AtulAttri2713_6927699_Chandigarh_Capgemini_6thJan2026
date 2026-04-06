@@ -1,0 +1,97 @@
+@model HospitalWeb.Models.BookAppointmentViewModel
+@{
+    ViewBag.Title = "Book Appointment";
+}
+
+<div class="d-flex align-items-center mb-4">
+    <a asp-action="Doctors" class="btn btn-outline-secondary btn-sm me-3"><i class="fas fa-arrow-left"></i></a>
+    <h4 class="fw-bold mb-0" style="color:#1e3a5f"><i class="fas fa-calendar-plus me-2"></i>Book Appointment</h4>
+</div>
+
+<div class="row g-4 justify-content-center">
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-header" style="background:linear-gradient(135deg,#1e3a5f,#0077b6);color:#fff;border-radius:16px 16px 0 0">
+                <div class="d-flex align-items-center gap-3">
+                    <div style="width:48px;height:48px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center">
+                        <i class="fas fa-user-md fa-lg"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold fs-5">@Model.DoctorName</div>
+                        <div class="opacity-75 small">@Model.DepartmentName</div>
+                    </div>
+                    <div class="ms-auto text-end">
+                        <div class="small opacity-75">Consultation Fee</div>
+                        <div class="fw-bold fs-4">₹@Model.ConsultationFee.ToString("N0")</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger"><i class="fas fa-exclamation-circle me-2"></i>@Html.ValidationSummary(true)</div>
+                }
+
+                <form asp-action="BookAppointment" method="post">
+                    <input type="hidden" asp-for="DoctorId" />
+                    <input type="hidden" asp-for="DoctorName" />
+                    <input type="hidden" asp-for="DepartmentName" />
+                    <input type="hidden" asp-for="ConsultationFee" />
+                    <input type="hidden" asp-for="Availability" />
+
+                    <div class="mb-4">
+                        <label asp-for="AppointmentDate" class="form-label fw-bold">
+                            <i class="fas fa-calendar me-2 text-primary"></i>Appointment Date *
+                        </label>
+                        <input asp-for="AppointmentDate" type="date" class="form-control"
+                               min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" />
+                        <span asp-validation-for="AppointmentDate" class="text-danger small"></span>
+                        @if (!string.IsNullOrEmpty(Model.Availability))
+                        {
+                            <small class="text-muted"><i class="fas fa-clock me-1"></i>Available: @Model.Availability</small>
+                        }
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="TimeSlot" class="form-label fw-bold">
+                            <i class="fas fa-clock me-2 text-primary"></i>Preferred Time Slot
+                        </label>
+                        <select asp-for="TimeSlot" class="form-select">
+                            <option value="">-- Select Time --</option>
+                            @foreach (var t in new[] {
+                                "08:00 AM","08:30 AM","09:00 AM","09:30 AM","10:00 AM","10:30 AM",
+                                "11:00 AM","11:30 AM","12:00 PM","12:30 PM","02:00 PM","02:30 PM",
+                                "03:00 PM","03:30 PM","04:00 PM","04:30 PM","05:00 PM","05:30 PM",
+                                "06:00 PM","06:30 PM","07:00 PM"
+                            })
+                            {
+                                <option value="@t">@t</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Reason" class="form-label fw-bold">
+                            <i class="fas fa-comment-medical me-2 text-primary"></i>Reason / Symptoms
+                        </label>
+                        <textarea asp-for="Reason" class="form-control" rows="3"
+                                  placeholder="Briefly describe your symptoms or reason for visit..."></textarea>
+                        <span asp-validation-for="Reason" class="text-danger small"></span>
+                    </div>
+
+                    <div class="bg-light rounded-3 p-3 mb-4">
+                        <div class="d-flex justify-content-between">
+                            <span class="text-muted">Consultation Fee</span>
+                            <span class="fw-bold text-success">₹@Model.ConsultationFee.ToString("N0")</span>
+                        </div>
+                        <small class="text-muted">Medicine charges will be added after prescription</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-3 fw-bold" style="font-size:1.05rem">
+                        <i class="fas fa-calendar-check me-2"></i>Confirm Booking
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Eventify</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+</head>
+<body>
+
+@if (Context.Request.Path != "/Login" && Context.Request.Path != "/Register")
+{
+    <header class="eb-header">
+        <div class="eb-header-inner">
+            <a class="eb-brand" href="/Home">
+                <span class="eb-brand-icon"><i class="bi bi-ticket-perforated-fill"></i></span>
+                <span class="eb-brand-text">Eventify</span>
+            </a>
+            <nav class="eb-nav">
+                <a href="/Home" class="eb-nav-link active"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a>
+            </nav>
+            <div class="eb-header-right">
+                <div class="eb-user-chip">
+                    <span class="eb-user-avatar"><i class="bi bi-person-fill"></i></span>
+                    <span id="navUser" class="eb-user-name">—</span>
+                </div>
+                <button onclick="logout()" class="eb-logout-btn">
+                    <i class="bi bi-box-arrow-right"></i> Sign Out
+                </button>
+            </div>
+        </div>
+    </header>
+}
+
+<main class="eb-main">
+    @RenderBody()
+</main>
+
+@if (Context.Request.Path != "/Login" && Context.Request.Path != "/Register")
+{
+    <footer class="eb-footer">
+        <div class="eb-footer-inner">
+            <span class="eb-footer-brand"><i class="bi bi-ticket-perforated-fill"></i> Eventify</span>
+            <span class="eb-footer-copy">© 2026 Eventify. All rights reserved.</span>
+            <div class="eb-footer-links">
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+                <a href="#">Support</a>
+            </div>
+        </div>
+    </footer>
+}
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    function logout() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("username");
+        localStorage.removeItem("role");
+        window.location.href = "/Login";
+    }
+
+    function setNavbarUser() {
+        let user = localStorage.getItem("username");
+        let role = localStorage.getItem("role");
+        const el = document.getElementById("navUser");
+        if (user && el) {
+            el.innerText = user + " · " + (role === "admin" ? "Admin" : "Member");
+        }
+    }
+
+    setNavbarUser();
+</script>
+
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

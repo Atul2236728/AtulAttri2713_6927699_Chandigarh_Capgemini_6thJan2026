@@ -1,0 +1,115 @@
+@model List<HospitalWeb.Models.BillDto>
+@{
+    ViewBag.Title = "Billing Management";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold mb-0" style="color:#1e3a5f"><i class="fas fa-file-invoice-dollar me-2"></i>Billing Management</h4>
+    <div class="d-flex gap-2">
+        <span class="badge bg-success p-2">Paid: @Model.Count(b => b.PaymentStatus == "Paid")</span>
+        <span class="badge bg-warning p-2">Unpaid: @Model.Count(b => b.PaymentStatus == "Unpaid")</span>
+    </div>
+</div>
+
+<!-- Summary Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="stat-icon teal"><i class="fas fa-rupee-sign"></i></div>
+            <div>
+                <div class="stat-value">₹@Model.Where(b=>b.PaymentStatus=="Paid").Sum(b=>b.TotalAmount).ToString("N0")</div>
+                <div class="stat-label">Total Revenue</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="stat-icon orange"><i class="fas fa-clock"></i></div>
+            <div>
+                <div class="stat-value">₹@Model.Where(b=>b.PaymentStatus=="Unpaid").Sum(b=>b.TotalAmount).ToString("N0")</div>
+                <div class="stat-label">Pending Amount</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="stat-icon green"><i class="fas fa-check-circle"></i></div>
+            <div>
+                <div class="stat-value">@Model.Count(b=>b.PaymentStatus=="Paid")</div>
+                <div class="stat-label">Paid Bills</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="stat-icon red"><i class="fas fa-exclamation-circle"></i></div>
+            <div>
+                <div class="stat-value">@Model.Count(b=>b.PaymentStatus=="Unpaid")</div>
+                <div class="stat-label">Unpaid Bills</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header"><i class="fas fa-list me-2"></i>All Bills</div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table data-table mb-0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Patient</th>
+                        <th>Doctor</th>
+                        <th>Date</th>
+                        <th>Consult Fee</th>
+                        <th>Medicine</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var b in Model)
+                    {
+                        <tr>
+                            <td class="text-muted small">@b.BillId</td>
+                            <td><div class="fw-semibold">@b.PatientName</div></td>
+                            <td>@b.DoctorName</td>
+                            <td>@b.AppointmentDate.ToString("dd MMM yy")</td>
+                            <td>₹@b.ConsultationFee.ToString("N0")</td>
+                            <td>₹@b.MedicineCharges.ToString("N0")</td>
+                            <td class="fw-bold text-primary">₹@b.TotalAmount.ToString("N0")</td>
+                            <td><span class="status-badge status-@b.PaymentStatus.ToLower()">@b.PaymentStatus</span></td>
+                            <td>
+                                @if (b.PaymentStatus == "Unpaid")
+                                {
+                                    <form asp-action="UpdatePayment" method="post" class="d-inline">
+                                        <input type="hidden" name="billId" value="@b.BillId" />
+                                        <input type="hidden" name="paymentStatus" value="Paid" />
+                                        <div class="input-group input-group-sm" style="width:180px">
+                                            <select name="paymentMethod" class="form-select form-select-sm" required>
+                                                <option value="">Method</option>
+                                                <option>Cash</option>
+                                                <option>UPI</option>
+                                                <option>Card</option>
+                                                <option>Insurance</option>
+                                            </select>
+                                            <button type="submit" class="btn btn-success btn-sm">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <small class="text-muted"><i class="fas fa-check-circle text-success me-1"></i>@b.PaymentMethod @b.PaidAt?.ToString("dd MMM")</small>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

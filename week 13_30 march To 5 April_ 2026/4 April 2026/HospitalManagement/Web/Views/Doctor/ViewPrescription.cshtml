@@ -1,0 +1,115 @@
+@* ViewPrescription.cshtml *@
+@model HospitalWeb.Models.PrescriptionDto
+@{
+    ViewBag.Title = "Prescription";
+}
+
+<div class="d-flex align-items-center mb-4 no-print">
+    <a asp-action="Appointments" class="btn btn-outline-secondary btn-sm me-3"><i class="fas fa-arrow-left"></i></a>
+    <h4 class="fw-bold mb-0" style="color:#1e3a5f">Prescription Detail</h4>
+    <button onclick="window.print()" class="btn btn-outline-primary btn-sm ms-auto">
+        <i class="fas fa-print me-2"></i>Print
+    </button>
+</div>
+
+<div class="bill-paper">
+    <div class="rx-header">
+        <div class="row">
+            <div class="col-md-8">
+                <div style="font-size:2rem;font-weight:800;font-style:italic;color:#ffd60a">℞</div>
+                <h4 class="mb-0">Medical Prescription</h4>
+                <small class="opacity-75">MediCare Smart Hospital</small>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <div><strong>Date:</strong> @Model.AppointmentDate.ToString("dd MMM yyyy")</div>
+                <div><strong>Rx #:</strong> @Model.PrescriptionId</div>
+            </div>
+        </div>
+    </div>
+    <div class="rx-body">
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="p-3 bg-light rounded-3">
+                    <div class="small text-muted mb-1">PATIENT</div>
+                    <div class="fw-bold fs-5">@Model.PatientName</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="p-3 bg-light rounded-3">
+                    <div class="small text-muted mb-1">DOCTOR</div>
+                    <div class="fw-bold fs-5">@Model.DoctorName</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <h6 class="text-muted text-uppercase small mb-2">Diagnosis</h6>
+            <div class="p-3 border rounded-3 fw-semibold">@Model.Diagnosis</div>
+        </div>
+
+        @if (Model.PrescriptionMedicines.Any())
+        {
+            <div class="mb-4">
+                <h6 class="text-muted text-uppercase small mb-2"><i class="fas fa-pills me-2"></i>Prescribed Medicines</h6>
+                @foreach (var m in Model.PrescriptionMedicines)
+                {
+                    <div class="med-item">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <div class="fw-bold">@m.MedicineName</div>
+                                <div class="text-muted small">
+                                    Qty: @m.Quantity &nbsp;|&nbsp;
+                                    @if (!string.IsNullOrEmpty(m.Dosage)) { <text>Dose: @m.Dosage &nbsp;|&nbsp;</text> }
+                                    @if (!string.IsNullOrEmpty(m.Duration)) { <text>For: @m.Duration</text> }
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <div class="fw-bold text-success">₹@m.TotalPrice.ToString("N2")</div>
+                                <div class="text-muted small">₹@m.UnitPrice × @m.Quantity</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.Medicines))
+        {
+            <div class="mb-4">
+                <h6 class="text-muted text-uppercase small mb-2">Additional Medicines</h6>
+                <div class="p-3 border rounded-3">@Model.Medicines</div>
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.Notes))
+        {
+            <div class="mb-4">
+                <h6 class="text-muted text-uppercase small mb-2"><i class="fas fa-sticky-note me-2"></i>Instructions</h6>
+                <div class="p-3 bg-warning bg-opacity-10 border border-warning rounded-3">@Model.Notes</div>
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.FollowUpDate))
+        {
+            <div class="p-3 bg-info bg-opacity-10 border border-info rounded-3">
+                <i class="fas fa-calendar-check text-info me-2"></i>
+                <strong>Follow-Up Date:</strong> @Model.FollowUpDate
+            </div>
+        }
+
+        <div class="text-end mt-4 pt-4 border-top">
+            <div class="text-muted small">Doctor's Signature</div>
+            <div class="fw-bold mt-1">@Model.DoctorName</div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+<style>
+@@media print {
+    .no-print, .top-navbar, #sidebar-wrapper { display: none !important; }
+    #page-content-wrapper { margin-left: 0 !important; }
+    .bill-paper { box-shadow: none; }
+}
+</style>
+}

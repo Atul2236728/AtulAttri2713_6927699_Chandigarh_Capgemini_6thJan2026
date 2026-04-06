@@ -1,0 +1,444 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: radial-gradient(circle at top, #2b3140 0%, #1b2334 50%, #0f1520 100%);
+    color: #e3e7ef;
+    min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: #edf2f7;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+h1 {
+    font-size: 2.75rem;
+    margin: 0;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+}
+
+h2 {
+    font-size: 1.85rem;
+    margin-top: 1rem;
+}
+
+/* Navigation bar */
+.navbar {
+    background: rgba(19, 28, 43, 0.95);
+    padding: 1rem 1.5rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.navbar-brand {
+    color: #f8fafc !important;
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.navbar .nav-link {
+    color: #e2e8f0 !important;
+    margin-left: 1rem;
+    font-size: 0.98rem;
+    transition: all 0.2s ease;
+}
+
+.navbar .nav-link:hover {
+    color: #38bdf8 !important;
+}
+
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.navbar-toggler-icon {
+    filter: invert(1);
+}
+
+/* Container styling */
+.container-custom {
+    background: rgba(242, 246, 255, 0.96);
+    border-radius: 24px;
+    padding: 2.5rem;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+    margin: 3rem auto;
+    max-width: 520px;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-label {
+    color: #334155;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    border-radius: 12px;
+    padding: 0.9rem 1rem;
+    font-size: 1rem;
+    transition: all 0.25s ease;
+    color: #1f2937;
+    background: #f8fafc;
+}
+
+.form-control:focus {
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 0.25rem rgba(56, 189, 248, 0.18);
+    background-color: #ffffff;
+}
+
+.form-control::placeholder {
+    color: #94a3b8;
+    opacity: 1;
+}
+
+.btn-primary-custom {
+    background: linear-gradient(135deg, #0f172a 0%, #2563eb 100%);
+    color: #f8fafc;
+    border: none;
+    padding: 0.9rem 1.8rem;
+    font-size: 1rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-weight: 700;
+    box-shadow: 0 12px 24px rgba(37, 99, 235, 0.3);
+}
+
+.btn-primary-custom:hover {
+    background: linear-gradient(135deg, #1e293b 0%, #38bdf8 100%);
+    transform: translateY(-2px);
+}
+
+.btn-primary-custom:active {
+    transform: translateY(0);
+}
+
+.btn-block-custom {
+    width: 100%;
+    display: block;
+}
+
+.card-custom {
+    background: rgba(15, 23, 42, 0.92);
+    border: 1px solid rgba(148, 163, 184, 0.16);
+    border-radius: 18px;
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.45);
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+}
+
+.card-custom:hover {
+    transform: translateY(-4px);
+}
+
+.card-header-custom {
+    background: rgba(15, 23, 42, 0.4);
+    color: #f8fafc;
+    padding: 1rem;
+    border-radius: 16px 16px 0 0;
+    font-size: 1.25rem;
+}
+
+.card-body-custom {
+    padding: 1.5rem;
+    color: #cbd5e1;
+}
+
+.dashboard-header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #f8fafc;
+    padding: 2rem;
+    border-radius: 16px;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.dashboard-header h1 {
+    color: #f8fafc;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-header p {
+    color: #94a3b8;
+    font-size: 1.05rem;
+}
+
+.alert-success {
+    background-color: #e2f0ff;
+    border-left: 4px solid #2563eb;
+    color: #0f172a;
+}
+
+.alert-danger {
+    background-color: #fee2e2;
+    border-left: 4px solid #dc2626;
+    color: #991b1b;
+}
+
+.alert-info {
+    background-color: #e0f2fe;
+    border-left: 4px solid #38bdf8;
+    color: #0f172a;
+}
+
+.table-custom {
+    background-color: rgba(248, 250, 252, 0.95);
+    border-collapse: collapse;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+footer {
+    color: #cbd5e1;
+    text-align: center;
+    padding: 1.5rem 0;
+}
+
+a {
+    color: #38bdf8;
+}
+
+a:hover {
+    color: #60a5fa;
+}
+
+.error-message {
+    color: #dc2626;
+    font-size: 0.95rem;
+}
+
+/* Dashboard styling */
+.dashboard-header {
+    background: linear-gradient(135deg, #c89cd4 0%, #d4a5d4 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.dashboard-header h1 {
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-header p {
+    color: #f0d9e8;
+    font-size: 1.1rem;
+}
+
+/* Alert styling */
+.alert-success {
+    background-color: #e8f5e9;
+    border-left: 4px solid #a8d5ba;
+    color: #2d5a3d;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border-left: 4px solid #c3212b;
+    color: #721c24;
+}
+
+.alert-info {
+    background-color: #e8d0e0;
+    border-left: 4px solid #c89cd4;
+    color: #6b4c7a;
+}
+
+/* Table styling */
+.table-custom {
+    background-color: white;
+    border-collapse: collapse;
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(139, 95, 163, 0.1);
+}
+
+.table-custom thead {
+    background: linear-gradient(135deg, #c89cd4 0%, #a8d5ba 100%);
+    color: white;
+}
+
+.table-custom thead th {
+    padding: 1rem;
+    text-align: left;
+    font-family: 'Georgia', serif;
+    font-weight: 600;
+}
+
+.table-custom tbody tr {
+    border-bottom: 1px solid #e8d0e0;
+    transition: background-color 0.2s ease;
+}
+
+.table-custom tbody tr:hover {
+    background-color: #faf7fc;
+}
+
+.table-custom tbody td {
+    padding: 1rem;
+    color: #6b4c7a;
+}
+
+/* Link styling */
+a {
+    color: #2d7659;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: #1a4d3a;
+    text-decoration: underline wavy #4a8f7a;
+}
+
+/* Footer styling */
+footer {
+    background: #0d5d3d;
+    color: #c8e8e0;
+    text-align: center;
+    padding: 2rem;
+    margin-top: 3rem;
+    border-top: 3px solid #4a8f7a;
+    font-family: 'Georgia', serif;
+}
+
+footer p {
+    margin: 0.5rem 0;
+}
+
+/* Error message styling */
+.error-message {
+    color: #d9534f;
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+    display: block;
+}
+
+/* Success message styling */
+.success-message {
+    color: #5cb85c;
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+    display: block;
+}
+
+/* Loading spinner */
+.spinner {
+    border: 4px solid #e8f5f0;
+    border-top: 4px solid #2d7659;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 1rem auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    .container-custom {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+
+    .navbar {
+        padding: 0.5rem 1rem;
+    }
+
+    .navbar .nav-link {
+        margin-left: 0.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Appointment card special styling */
+.appointment-item {
+    background: linear-gradient(135deg, #f5fdf9 0%, #e8f5f0 100%);
+    border-left: 4px solid #2d7659;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.appointment-item:hover {
+    box-shadow: 0 5px 15px rgba(13, 93, 61, 0.2);
+    transform: translateX(5px);
+}
+
+.appointment-date {
+    color: #2d7659;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.appointment-doctor {
+    color: #1a4d3a;
+    margin-top: 0.5rem;
+}
+
+/* Doctor card styling */
+.doctor-card {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 2px solid #d0e8e3;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.doctor-card:hover {
+    border-color: #2d7659;
+    box-shadow: 0 8px 25px rgba(13, 93, 61, 0.2);
+}
+
+.doctor-name {
+    font-family: 'Brush Script MT', cursive;
+    font-size: 1.5rem;
+    color: #1a4d3a;
+    margin: 0.5rem 0;
+}
+
+.doctor-specialization {
+    color: #2d7659;
+    font-weight: 600;
+    margin: 0.5rem 0;
+}
+
+.doctor-experience {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+/* Badge styling */
+.badge-custom {
+    background: linear-gradient(135deg, #2d7659 0%, #4a8f7a 100%);
+    color: white;
+    padding: 0.3rem 0.7rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    display: inline-block;
+    margin-right: 0.5rem;
+}

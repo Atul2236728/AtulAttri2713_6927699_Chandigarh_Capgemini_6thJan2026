@@ -1,0 +1,45 @@
+@* Doctors.cshtml *@
+@model List<HospitalWeb.Models.DoctorDto>
+@{
+    ViewBag.Title = "Manage Doctors";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold mb-0" style="color:#1e3a5f"><i class="fas fa-user-md me-2"></i>Doctors</h4>
+    <a asp-action="CreateDoctor" class="btn btn-primary"><i class="fas fa-plus me-2"></i>Add Doctor</a>
+</div>
+
+<div class="row g-4">
+    @foreach (var doc in Model)
+    {
+        <div class="col-lg-4 col-md-6">
+            <div class="doctor-card">
+                <div class="doctor-card-header">
+                    <div class="doctor-avatar"><i class="fas fa-user-md"></i></div>
+                    <div class="doctor-name">@doc.FullName</div>
+                    <div class="doctor-dept"><i class="fas fa-hospital-alt me-1"></i>@doc.DepartmentName</div>
+                </div>
+                <div class="doctor-card-body">
+                    <div class="doctor-info-item"><i class="fas fa-stethoscope"></i>@doc.Specialization</div>
+                    <div class="doctor-info-item"><i class="fas fa-graduation-cap"></i>@doc.Qualification</div>
+                    <div class="doctor-info-item"><i class="fas fa-briefcase-medical"></i>@doc.ExperienceYears yrs exp</div>
+                    <div class="doctor-info-item"><i class="fas fa-clock"></i>@doc.Availability</div>
+                    <div class="doctor-info-item"><i class="fas fa-envelope"></i>@doc.Email</div>
+                </div>
+                <div class="doctor-card-footer">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="doctor-fee">₹@doc.ConsultationFee.ToString("N0")/visit</span>
+                        <span class="badge @(doc.IsAvailable ? "bg-success" : "bg-secondary")">@(doc.IsAvailable ? "Active" : "Inactive")</span>
+                    </div>
+                    <form asp-action="DeleteDoctor" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@doc.DoctorId" />
+                        <button type="submit" class="btn btn-outline-danger btn-sm btn-confirm w-100"
+                                data-confirm="Deactivate Dr. @doc.FullName?">
+                            <i class="fas fa-user-slash me-1"></i>Deactivate
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>

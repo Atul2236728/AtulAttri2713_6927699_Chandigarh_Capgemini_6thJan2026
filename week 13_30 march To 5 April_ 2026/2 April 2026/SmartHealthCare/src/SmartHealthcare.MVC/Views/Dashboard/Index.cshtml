@@ -1,0 +1,127 @@
+@{
+    ViewData["Title"] = "Dashboard";
+    var role = ViewBag.Role as string;
+    var fullName = ViewBag.FullName as string;
+}
+
+<div class="mb-4">
+    <h2 class="fw-bold">Welcome, @fullName 👋</h2>
+    <p class="text-muted">Role: <span class="badge bg-primary">@role</span></p>
+</div>
+
+@if (role == "Admin")
+{
+    <div class="row g-4">
+
+        <!-- USERS -->
+        <div class="col-md-3">
+            <div class="card p-3">
+                <h6 class="text-muted">Users</h6>
+                <h3>-</h3>
+                <a href="@Url.Action("Users", "Admin")" class="btn btn-sm btn-primary mt-2">Manage</a>
+            </div>
+        </div>
+
+        <!-- DOCTORS -->
+        <div class="col-md-3">
+            <div class="card p-3">
+                <h6 class="text-muted">Doctors</h6>
+                <h3>-</h3>
+                <a href="@Url.Action("Index", "Doctor")" class="btn btn-sm btn-success mt-2">View</a>
+            </div>
+        </div>
+
+        <!-- PATIENTS -->
+        <div class="col-md-3">
+            <div class="card p-3">
+                <h6 class="text-muted">Patients</h6>
+                <h3>-</h3>
+                <a href="@Url.Action("Index", "Appointment")" class="btn btn-sm btn-warning mt-2">View</a>
+            </div>
+        </div>
+
+        <!-- APPOINTMENTS -->
+        <div class="col-md-3">
+            <div class="card p-3">
+                <h6 class="text-muted">Appointments</h6>
+                <h3>-</h3>
+                <a href="@Url.Action("Index", "Appointment")" class="btn btn-sm btn-danger mt-2">View</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card mt-4 p-4">
+        <h5 class="fw-semibold">Admin Reports</h5>
+        <p class="text-muted">View analytics and reports</p>
+        <a href="@Url.Action("Reports", "Admin")" class="btn btn-dark">View Reports</a>
+    </div>
+}
+
+else if (role == "Doctor")
+{
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="card p-3">
+                <h6 class="text-muted">Appointments</h6>
+                <p>Manage your schedule</p>
+                <a href="@Url.Action("Index", "Appointment")" class="btn btn-info">Open</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-3">
+                <h6 class="text-muted">Profile</h6>
+                <p>Update your details</p>
+                <a href="@Url.Action("Profile", "Patient")" class="btn btn-secondary">Edit</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-3">
+                <h6 class="text-muted">Prescriptions</h6>
+                <p>Manage prescriptions</p>
+                <button class="btn btn-warning">View</button>
+            </div>
+        </div>
+
+    </div>
+}
+
+else if (role == "Patient")
+{
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="card p-3">
+                <h6 class="text-muted">Book Appointment</h6>
+                <p>Schedule a doctor visit</p>
+                <a href="@Url.Action("Create", "Appointment")" class="btn btn-success">Book</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-3">
+                <h6 class="text-muted">My Appointments</h6>
+                <p>View your schedule</p>
+                <a href="@Url.Action("Index", "Appointment")" class="btn btn-info">View</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-3">
+                <h6 class="text-muted">Profile</h6>
+                <p>Update your info</p>
+                <a href="@Url.Action("Profile", "Patient")" class="btn btn-warning">Edit</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card mt-4 p-4">
+        <h5 class="fw-semibold">Find Doctors</h5>
+        <p class="text-muted">Browse available doctors</p>
+        <a href="@Url.Action("Index", "Doctor")" class="btn btn-primary">Explore</a>
+    </div>
+}

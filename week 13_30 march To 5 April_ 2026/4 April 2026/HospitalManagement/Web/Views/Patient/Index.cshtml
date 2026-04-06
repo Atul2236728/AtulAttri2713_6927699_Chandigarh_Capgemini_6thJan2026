@@ -1,0 +1,119 @@
+@{
+    ViewBag.Title = "My Dashboard";
+    var upcoming = ViewBag.UpcomingAppointments as List<HospitalWeb.Models.AppointmentDto> ?? new();
+    var past = ViewBag.PastAppointments as List<HospitalWeb.Models.AppointmentDto> ?? new();
+    var total = (int)(ViewBag.TotalAppointments ?? 0);
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold mb-0" style="color:#1e3a5f">Welcome, @User.Identity?.Name 👋</h4>
+        <small class="text-muted">Here's your health overview</small>
+    </div>
+    <a asp-action="Doctors" class="btn btn-primary">
+        <i class="fas fa-calendar-plus me-2"></i>Book Appointment
+    </a>
+</div>
+
+<!-- Stats -->
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-icon blue"><i class="fas fa-calendar-alt"></i></div>
+            <div>
+                <div class="stat-value">@total</div>
+                <div class="stat-label">Total Appointments</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-icon orange"><i class="fas fa-hourglass-half"></i></div>
+            <div>
+                <div class="stat-value">@upcoming.Count</div>
+                <div class="stat-label">Upcoming</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-icon green"><i class="fas fa-check-circle"></i></div>
+            <div>
+                <div class="stat-value">@past.Count</div>
+                <div class="stat-label">Completed</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row g-3 mb-4">
+    @foreach (var qa in new[] {
+        new{icon="fa-user-md",label="Find Doctor",url="/Patient/Doctors",color="primary"},
+        new{icon="fa-prescription-bottle-alt",label="My Prescriptions",url="/Patient/Prescriptions",color="success"},
+        new{icon="fa-receipt",label="My Bills",url="/Patient/Bills",color="warning"},
+        new{icon="fa-user-cog",label="My Profile",url="/Patient/Profile",color="info"}
+    })
+    {
+        <div class="col-6 col-md-3">
+            <a href="@qa.url" class="card text-center p-3 text-decoration-none h-100"
+               style="border:2px solid #f0f4f8;transition:all .2s"
+               onmouseover="this.style.borderColor='var(--accent)';this.style.transform='translateY(-3px)'"
+               onmouseout="this.style.borderColor='#f0f4f8';this.style.transform='none'">
+                <i class="fas @qa.icon fa-2x text-@qa.color mb-2"></i>
+                <div class="fw-semibold small" style="color:#1e3a5f">@qa.label</div>
+            </a>
+        </div>
+    }
+</div>
+
+<!-- Upcoming Appointments -->
+@if (upcoming.Any())
+{
+    <div class="card mb-4">
+        <div class="card-header"><i class="fas fa-calendar-check me-2"></i>Upcoming Appointments</div>
+        <div class="card-body">
+            <div class="row g-3">
+                @foreach (var a in upcoming.Take(4))
+                {
+                    <div class="col-md-6">
+                        <div class="border rounded-3 p-3" style="border-left:4px solid #0077b6 !important">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <div class="fw-bold">@a.DoctorName</div>
+                                    <div class="text-muted small">@a.DepartmentName</div>
+                                    <div class="text-muted small mt-1">
+                                        <i class="fas fa-calendar me-1"></i>@a.AppointmentDate.ToString("dd MMM yyyy")
+                                        @if (!string.IsNullOrEmpty(a.TimeSlot)) { <text>&nbsp;@a.TimeSlot</text> }
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <span class="status-badge status-@a.Status.ToLower()">@a.Status</span>
+                                    <div class="text-success fw-bold small mt-2">₹@a.ConsultationFee.ToString("N0")</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            @if (upcoming.Count > 4)
+            {
+                <div class="text-center mt-3">
+                    <a asp-action="Appointments" class="btn btn-outline-primary btn-sm">View All (@upcoming.Count)</a>
+                </div>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="card mb-4">
+        <div class="card-body text-center py-5">
+            <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+            <h5 class="text-muted">No upcoming appointments</h5>
+            <a asp-action="Doctors" class="btn btn-primary mt-2">
+                <i class="fas fa-search me-2"></i>Find a Doctor
+            </a>
+        </div>
+    </div>
+}

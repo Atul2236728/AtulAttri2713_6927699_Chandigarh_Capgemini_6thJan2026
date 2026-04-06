@@ -1,0 +1,128 @@
+@{
+    ViewData["Title"] = "Admin Reports";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h1 class="mb-3"><i class="bi bi-graph-up"></i> Analytics &amp; Reports</h1>
+            <p class="text-muted">View system statistics and performance metrics</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-bar-chart"></i> System Reports</h5>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.Report != null)
+                    {
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <div class="stat-box">
+                                    <h6 class="text-muted"><i class="bi bi-people"></i> Total Users</h6>
+                                    <h3 class="text-primary">@((dynamic)ViewBag.Report).TotalUsers</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="stat-box">
+                                    <h6 class="text-muted"><i class="bi bi-person-check"></i> Total Patients</h6>
+                                    <h3 class="text-info">@((dynamic)ViewBag.Report).TotalPatients</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="stat-box">
+                                    <h6 class="text-muted"><i class="bi bi-hospital"></i> Total Doctors</h6>
+                                    <h3 class="text-success">@((dynamic)ViewBag.Report).TotalDoctors</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="stat-box">
+                                    <h6 class="text-muted"><i class="bi bi-calendar-check"></i> Total Appointments</h6>
+                                    <h3 class="text-warning">@((dynamic)ViewBag.Report).TotalAppointments</h3>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4" />
+
+                        <h5 class="mb-3"><i class="bi bi-line-chart"></i> Appointment Statistics</h5>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <div class="stat-box bg-warning bg-opacity-10 border-start border-4 border-warning">
+                                    <h6 class="text-muted"><i class="bi bi-clock-fill"></i> Pending Appointments</h6>
+                                    <h3 class="text-warning">@((dynamic)ViewBag.Report).PendingAppointments</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="stat-box bg-success bg-opacity-10 border-start border-4 border-success">
+                                    <h6 class="text-muted"><i class="bi bi-check-circle"></i> Completed Appointments</h6>
+                                    <h3 class="text-success">@((dynamic)ViewBag.Report).CompletedAppointments</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="stat-box bg-danger bg-opacity-10 border-start border-4 border-danger">
+                                    <h6 class="text-muted"><i class="bi bi-x-circle"></i> Cancelled Appointments</h6>
+                                    <h3 class="text-danger">@((dynamic)ViewBag.Report).CancelledAppointments</h3>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4" />
+
+                        <h5 class="mb-3"><i class="bi bi-capsule"></i> Prescription Statistics</h5>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="stat-box bg-light">
+                                    <h6 class="text-muted"><i class="bi bi-receipt"></i> Total Prescriptions Issued</h6>
+                                    <h3 class="text-primary">@((dynamic)ViewBag.Report).TotalPrescriptions</h3>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4" />
+
+                        <div class="alert alert-info mb-0">
+                            <i class="bi bi-info-circle"></i> <strong>Last Updated:</strong> @DateTime.Now.ToString("dd-MMM-yyyy HH:mm:ss")
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning" role="alert">
+                            <i class="bi bi-exclamation-triangle"></i> No reports available at this time.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .stat-box {
+        background-color: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        border-left: 4px solid #0d6efd;
+        min-height: 120px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .stat-box h3 {
+        margin-top: 0.5rem;
+        font-weight: 700;
+    }
+
+    .stat-box h6 {
+        font-weight: 600;
+        margin-bottom: 0;
+    }
+
+    .bg-opacity-10 {
+        background-color: rgba(var(--bs-light-rgb), 0.1) !important;
+    }
+</style>

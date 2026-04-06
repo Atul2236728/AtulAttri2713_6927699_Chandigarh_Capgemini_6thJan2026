@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@(ViewBag.Title ?? "MediCare") - Smart Hospital</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body class="@(User.Identity?.IsAuthenticated == true ? "sidebar-layout" : "")">
+
+@if (User.Identity?.IsAuthenticated == true)
+{
+    var role = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
+    <div class="d-flex" id="wrapper">
+        <!-- SIDEBAR -->
+        <div id="sidebar-wrapper">
+            <div class="sidebar-brand">
+                <i class="fas fa-hospital-alt me-2"></i>MediCare
+            </div>
+            <div class="sidebar-user">
+                <div class="user-avatar"><i class="fas fa-user-circle fa-2x"></i></div>
+                <div class="user-info">
+                    <div class="user-name">@User.Identity.Name</div>
+                    <div class="user-role badge @(role == "Admin" ? "bg-danger" : role == "Doctor" ? "bg-info" : "bg-success")">@role</div>
+                </div>
+            </div>
+            <ul class="sidebar-nav list-unstyled">
+                @if (role == "Admin")
+                {
+                    <li><a asp-controller="Admin" asp-action="Index"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a asp-controller="Admin" asp-action="Doctors"><i class="fas fa-user-md"></i> Doctors</a></li>
+                    <li><a asp-controller="Admin" asp-action="Patients"><i class="fas fa-procedures"></i> Patients</a></li>
+                    <li><a asp-controller="Admin" asp-action="Departments"><i class="fas fa-hospital"></i> Departments</a></li>
+                    <li><a asp-controller="Admin" asp-action="Bills"><i class="fas fa-file-invoice-dollar"></i> Billing</a></li>
+                    <li><a asp-controller="Admin" asp-action="Medicines"><i class="fas fa-pills"></i> Medicines</a></li>
+                    <li><a asp-controller="Admin" asp-action="Users"><i class="fas fa-users"></i> Users</a></li>
+                }
+                else if (role == "Doctor")
+                {
+                    <li><a asp-controller="Doctor" asp-action="Index"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a asp-controller="Doctor" asp-action="Appointments"><i class="fas fa-calendar-check"></i> Appointments</a></li>
+                    <li><a asp-controller="Doctor" asp-action="Profile"><i class="fas fa-id-card"></i> My Profile</a></li>
+                }
+                else
+                {
+                    <li><a asp-controller="Patient" asp-action="Index"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a asp-controller="Patient" asp-action="Doctors"><i class="fas fa-user-md"></i> Find Doctors</a></li>
+                    <li><a asp-controller="Patient" asp-action="Appointments"><i class="fas fa-calendar-alt"></i> Appointments</a></li>
+                    <li><a asp-controller="Patient" asp-action="Prescriptions"><i class="fas fa-prescription-bottle-alt"></i> Prescriptions</a></li>
+                    <li><a asp-controller="Patient" asp-action="Bills"><i class="fas fa-receipt"></i> Bills</a></li>
+                    <li><a asp-controller="Patient" asp-action="Profile"><i class="fas fa-user-cog"></i> My Profile</a></li>
+                }
+            </ul>
+            <div class="sidebar-footer">
+                <a asp-controller="Auth" asp-action="Logout" class="btn-logout">
+                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                </a>
+            </div>
+        </div>
+
+        <!-- PAGE CONTENT -->
+        <div id="page-content-wrapper">
+            <!-- Top navbar -->
+            <nav class="top-navbar">
+                <button class="btn-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+                <div class="ms-auto d-flex align-items-center gap-3">
+                    <span class="text-muted small">@DateTime.Now.ToString("dddd, dd MMM yyyy")</span>
+                </div>
+            </nav>
+
+            <div class="container-fluid p-4">
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fas fa-check-circle me-2"></i>@TempData["Success"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i>@TempData["Error"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <!-- PUBLIC NAV -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">
+                <i class="fas fa-hospital-alt me-2"></i>MediCare
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="#departments">Departments</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#doctors">Doctors</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item ms-2">
+                        <a asp-controller="Auth" asp-action="Login" class="btn btn-outline-light btn-sm">Login</a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <a asp-controller="Auth" asp-action="Register" class="btn btn-warning btn-sm fw-bold">Register</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div style="padding-top:70px;">
+        @RenderBody()
+    </div>
+
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container text-center">
+            <p class="mb-0"><i class="fas fa-hospital-alt me-2"></i><strong>MediCare Smart Hospital</strong></p>
+            <small class="text-muted">© 2024 All rights reserved.</small>
+        </div>
+    </footer>
+}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

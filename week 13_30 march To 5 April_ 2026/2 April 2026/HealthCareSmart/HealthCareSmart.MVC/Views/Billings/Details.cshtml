@@ -1,0 +1,51 @@
+@{
+    ViewData["Title"] = "Billing Details";
+    var bill = ViewBag.Billing as Dictionary<string, object> ?? new Dictionary<string, object>();
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h5 class="mb-0"><i class="bi bi-receipt text-primary me-2"></i>Invoice #@bill["id"]</h5>
+                <small class="text-muted">Detailed charges for this consultation</small>
+            </div>
+            <a asp-action="Index" class="btn btn-outline-secondary btn-sm">Back to Billing</a>
+        </div>
+
+        <dl class="row mb-4">
+            <dt class="col-sm-3">Appointment ID</dt>
+            <dd class="col-sm-9">@bill["appointmentId"]</dd>
+
+            <dt class="col-sm-3">Doctor</dt>
+            <dd class="col-sm-9">@bill["doctorName"]</dd>
+
+            <dt class="col-sm-3">Patient</dt>
+            <dd class="col-sm-9">@bill["patientName"]</dd>
+
+            <dt class="col-sm-3">Invoice Date</dt>
+            <dd class="col-sm-9">@bill["createdAt"]</dd>
+        </dl>
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="card bg-light p-3">
+                    <h6>Consultation Fee</h6>
+                    <p class="fs-4 mb-0">@string.Format("{0:C}", bill["consultationFee"])</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-light p-3">
+                    <h6>Medicine Charges</h6>
+                    <p class="fs-4 mb-0">@string.Format("{0:C}", bill["medicineCost"])</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-primary text-white p-3">
+                    <h6>Total Amount</h6>
+                    <p class="fs-4 mb-0">@string.Format("{0:C}", bill["totalAmount"])</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

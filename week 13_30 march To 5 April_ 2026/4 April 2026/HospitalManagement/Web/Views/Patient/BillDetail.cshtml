@@ -1,0 +1,116 @@
+@model HospitalWeb.Models.BillDto
+@{
+    ViewBag.Title = "Bill Detail";
+}
+
+<div class="d-flex align-items-center mb-4 no-print">
+    <a asp-action="Bills" class="btn btn-outline-secondary btn-sm me-3"><i class="fas fa-arrow-left"></i></a>
+    <h4 class="fw-bold mb-0" style="color:#1e3a5f">Bill / Invoice</h4>
+    <button onclick="window.print()" class="btn btn-outline-primary btn-sm ms-auto">
+        <i class="fas fa-print me-2"></i>Print Invoice
+    </button>
+</div>
+
+<div class="bill-paper">
+    <div class="bill-header">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h4 class="mb-0"><i class="fas fa-hospital-alt me-2"></i>MediCare Smart Hospital</h4>
+                <small class="opacity-75">Excellence in Healthcare</small>
+            </div>
+            <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                <div class="fs-5 fw-bold">INVOICE</div>
+                <div>Bill #@Model.BillId</div>
+                <div>Generated: @Model.GeneratedAt.ToString("dd MMM yyyy")</div>
+            </div>
+        </div>
+    </div>
+    <div class="bill-body">
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h6 class="text-muted text-uppercase small">Billed To</h6>
+                <div class="fw-bold fs-5">@Model.PatientName</div>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <h6 class="text-muted text-uppercase small">Consulting Doctor</h6>
+                <div class="fw-bold fs-5">@Model.DoctorName</div>
+                <div class="text-muted small">Visit Date: @Model.AppointmentDate.ToString("dd MMM yyyy")</div>
+            </div>
+        </div>
+
+        <table class="table mb-0">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th class="text-end">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Consultation Fee</td>
+                    <td class="text-end">₹@Model.ConsultationFee.ToString("N2")</td>
+                </tr>
+                @if (Model.MedicineCharges > 0)
+                {
+                    <tr>
+                        <td>Medicine Charges</td>
+                        <td class="text-end">₹@Model.MedicineCharges.ToString("N2")</td>
+                    </tr>
+                }
+                @if (Model.OtherCharges > 0)
+                {
+                    <tr>
+                        <td>Other Charges</td>
+                        <td class="text-end">₹@Model.OtherCharges.ToString("N2")</td>
+                    </tr>
+                }
+                @if (Model.Discount > 0)
+                {
+                    <tr class="text-success">
+                        <td>Discount</td>
+                        <td class="text-end">-₹@Model.Discount.ToString("N2")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="bill-total mt-3">
+            <span>TOTAL AMOUNT</span>
+            <span>₹@Model.TotalAmount.ToString("N2")</span>
+        </div>
+
+        <div class="mt-4 d-flex justify-content-between align-items-center">
+            <div>
+                <span class="status-badge status-@Model.PaymentStatus.ToLower() fs-6">
+                    <i class="fas @(Model.PaymentStatus=="Paid"?"fa-check-circle":"fa-clock") me-2"></i>
+                    @Model.PaymentStatus
+                </span>
+                @if (Model.PaymentStatus == "Paid")
+                {
+                    <div class="text-muted small mt-1">
+                        Method: @Model.PaymentMethod &nbsp;|&nbsp;
+                        Paid on: @Model.PaidAt?.ToString("dd MMM yyyy HH:mm")
+                    </div>
+                }
+            </div>
+            @if (Model.PaymentStatus == "Unpaid")
+            {
+                <div class="text-danger small"><i class="fas fa-exclamation-circle me-1"></i>Please pay at reception</div>
+            }
+        </div>
+
+        <div class="text-center mt-5 text-muted small">
+            <i class="fas fa-heart text-danger me-1"></i> Thank you for choosing MediCare Smart Hospital
+        </div>
+    </div>
+</div>
+
+@section Styles {
+<style>
+@@media print {
+    .no-print,.top-navbar,#sidebar-wrapper { display:none !important; }
+    #page-content-wrapper { margin-left:0 !important; }
+    .bill-paper { box-shadow:none; }
+}
+</style>
+}

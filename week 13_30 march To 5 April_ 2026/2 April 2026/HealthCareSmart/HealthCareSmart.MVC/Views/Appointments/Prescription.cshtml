@@ -1,0 +1,116 @@
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@{
+    ViewData["Title"] = "Prescription Details";
+    var prescription = (Dictionary<string, object>?)Model;
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>@ViewBag.Error</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            else if (prescription != null)
+            {
+                <div class="card shadow-lg">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">Prescription Details</h4>
+                    </div>
+                    <div class="card-body">
+                        <!-- Doctor and Date Information -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <p><strong>Doctor:</strong> <span class="text-primary">@prescription["doctorName"]</span></p>
+                                <p><strong>Appointment ID:</strong> @prescription["appointmentId"]</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Issued Date:</strong> @DateTime.Parse(prescription["issuedDate"].ToString()).ToString("dd MMM yyyy HH:mm")</p>
+                                <p><strong>Prescription ID:</strong> @prescription["id"]</p>
+                            </div>
+                        </div>
+
+                        <!-- Instructions -->
+                        <div class="mb-4">
+                            <h5>Instructions</h5>
+                            <div class="alert alert-info">
+                                <p>@prescription["instructions"]</p>
+                            </div>
+                        </div>
+
+                        <!-- Medicines Table -->
+                        <div class="mb-4">
+                            <h5>Medicines Prescribed</h5>
+                            @{
+                                var medicinesJson = JsonSerializer.Serialize(prescription["medicines"]);
+                                var medicines = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(medicinesJson,
+                                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new();
+                            }
+                            @if (medicines.Count > 0)
+                            {
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Medicine Name</th>
+                                                <th>Dosage</th>
+                                                <th>Price (₹)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var medicine in medicines)
+                                            {
+                                                <tr>
+                                                    <td>@medicine["name"]</td>
+                                                    <td>@medicine["dosage"]</td>
+                                                    <td>
+                                                        @if (decimal.TryParse(medicine["price"].ToString(), out decimal price))
+                                                        {
+                                                            <span class="badge bg-success">₹@price.ToString("F2")</span>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            else
+                            {
+                                <p class="text-muted">No medicines prescribed yet.</p>
+                            }
+                        </div>
+
+                        <!-- Total Medicine Cost -->
+                        @{
+                            var totalMedicineCost = medicines.Sum(m => 
+                                decimal.TryParse(m["price"].ToString(), out decimal p) ? p : 0);
+                        }
+                        <div class="row mb-4">
+                            <div class="col-md-6 offset-md-6">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <p><strong>Total Medicine Cost:</strong> <span class="text-success">₹@totalMedicineCost.ToString("F2")</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="@Url.Action("Index", "Appointments")" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Back to Appointments
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

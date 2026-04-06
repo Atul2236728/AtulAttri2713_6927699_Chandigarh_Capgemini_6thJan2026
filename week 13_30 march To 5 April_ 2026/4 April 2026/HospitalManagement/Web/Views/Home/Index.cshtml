@@ -1,0 +1,172 @@
+@{
+    ViewBag.Title = "MediCare - Smart Hospital";
+    Layout = "_Layout";
+    var departments = ViewBag.Departments as List<HospitalWeb.Models.DepartmentDto> ?? new();
+    var doctors = ViewBag.FeaturedDoctors as List<HospitalWeb.Models.DoctorDto> ?? new();
+}
+
+<!-- HERO -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 hero-content">
+                <div class="badge bg-warning text-dark mb-3 px-3 py-2 rounded-pill">
+                    <i class="fas fa-star me-1"></i> India's Trusted Multi-Specialty Hospital
+                </div>
+                <h1 class="hero-title">Your Health Is Our <span style="color:#00b4d8">Priority</span></h1>
+                <p class="hero-subtitle">Book appointments with India's top specialists. Access prescriptions, bills, and medical records — all in one place.</p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a asp-controller="Auth" asp-action="Register" class="btn btn-warning btn-lg fw-bold px-4">
+                        <i class="fas fa-user-plus me-2"></i>Get Started Free
+                    </a>
+                    <a href="#departments" class="btn btn-outline-light btn-lg px-4">
+                        <i class="fas fa-search me-2"></i>Find a Doctor
+                    </a>
+                </div>
+                <div class="hero-stats mt-4">
+                    <div>
+                        <div class="hero-stat-num">50+</div>
+                        <div class="hero-stat-label">Expert Doctors</div>
+                    </div>
+                    <div>
+                        <div class="hero-stat-num">10K+</div>
+                        <div class="hero-stat-label">Happy Patients</div>
+                    </div>
+                    <div>
+                        <div class="hero-stat-num">10</div>
+                        <div class="hero-stat-label">Specialities</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center mt-5 mt-lg-0">
+                <div class="hero-img-wrap d-inline-block">
+                    <i class="fas fa-hospital-user" style="font-size:12rem;color:rgba(255,255,255,.3)"></i>
+                    <div class="row g-3 mt-2">
+                        <div class="col-6">
+                            <div class="bg-white bg-opacity-10 rounded-3 p-3 text-start">
+                                <i class="fas fa-calendar-check text-warning mb-2"></i>
+                                <div class="fw-bold small">Easy Booking</div>
+                                <div style="font-size:.75rem;opacity:.8">Book in 60 seconds</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="bg-white bg-opacity-10 rounded-3 p-3 text-start">
+                                <i class="fas fa-file-medical text-warning mb-2"></i>
+                                <div class="fw-bold small">Digital Records</div>
+                                <div style="font-size:.75rem;opacity:.8">Access anytime</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section class="py-5 bg-white">
+    <div class="container">
+        <div class="row g-4">
+            @foreach (var f in new[] {
+                new { icon="fa-calendar-check", color="blue", title="Easy Appointments", desc="Book with your preferred specialist in minutes. Get instant confirmation." },
+                new { icon="fa-prescription-bottle-alt", color="green", title="Digital Prescriptions", desc="Access your prescriptions anytime, anywhere on your device." },
+                new { icon="fa-file-invoice-dollar", color="orange", title="Transparent Billing", desc="Clear itemized bills with consultation fee + medicine charges breakdown." },
+                new { icon="fa-shield-alt", color="purple", title="Secure & Private", desc="Your health data protected with JWT authentication and encryption." }
+            })
+            {
+                <div class="col-md-3 col-sm-6">
+                    <div class="text-center p-4">
+                        <div class="stat-icon @f.color mx-auto mb-3" style="width:70px;height:70px;font-size:1.8rem">
+                            <i class="fas @f.icon"></i>
+                        </div>
+                        <h5 class="fw-bold">@f.title</h5>
+                        <p class="text-muted small">@f.desc</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- DEPARTMENTS -->
+<section id="departments" class="py-5" style="background:#f8f9ff">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill mb-2">Our Specialities</span>
+            <h2 class="fw-bold">Medical Departments</h2>
+            <p class="text-muted">World-class care across all major medical disciplines</p>
+        </div>
+        <div class="row g-4">
+            @foreach (var dept in departments)
+            {
+                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+                    <a asp-controller="Auth" asp-action="Login" class="dept-card">
+                        <div class="dept-icon">
+                            <i class="fas @dept.IconClass"></i>
+                        </div>
+                        <div class="dept-name">@dept.DepartmentName</div>
+                        <div class="dept-count">@dept.DoctorCount doctor@(dept.DoctorCount != 1 ? "s" : "")</div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- FEATURED DOCTORS -->
+<section id="doctors" class="py-5 bg-white">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill mb-2">Our Team</span>
+            <h2 class="fw-bold">Meet Our Specialists</h2>
+            <p class="text-muted">Experienced, compassionate doctors dedicated to your well-being</p>
+        </div>
+        <div class="row g-4">
+            @foreach (var doc in doctors)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="doctor-card">
+                        <div class="doctor-card-header">
+                            <div class="doctor-avatar"><i class="fas fa-user-md"></i></div>
+                            <div class="doctor-name">@doc.FullName</div>
+                            <div class="doctor-dept"><i class="fas fa-hospital-alt me-1"></i>@doc.DepartmentName</div>
+                        </div>
+                        <div class="doctor-card-body">
+                            <div class="doctor-info-item"><i class="fas fa-graduation-cap"></i>@doc.Qualification</div>
+                            <div class="doctor-info-item"><i class="fas fa-briefcase-medical"></i>@doc.ExperienceYears years experience</div>
+                            <div class="doctor-info-item"><i class="fas fa-clock"></i>@doc.Availability</div>
+                        </div>
+                        <div class="doctor-card-footer">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="doctor-fee">₹@doc.ConsultationFee.ToString("N0")</span>
+                                <span class="badge bg-success-subtle text-success">Available</span>
+                            </div>
+                            <a asp-controller="Auth" asp-action="Login" class="btn btn-primary w-100">
+                                <i class="fas fa-calendar-plus me-2"></i>Book Appointment
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="text-center mt-4">
+            <a asp-controller="Auth" asp-action="Login" class="btn btn-outline-primary btn-lg">
+                View All Doctors <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="py-5 bg-gradient-primary text-white">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3">Ready to Get Started?</h2>
+        <p class="mb-4 opacity-90">Join thousands of patients who trust MediCare for their healthcare needs.</p>
+        <a asp-controller="Auth" asp-action="Register" class="btn btn-warning btn-lg fw-bold px-5 me-3">
+            <i class="fas fa-user-plus me-2"></i>Register as Patient
+        </a>
+        <a asp-controller="Auth" asp-action="Login" class="btn btn-outline-light btn-lg px-5">
+            <i class="fas fa-sign-in-alt me-2"></i>Login
+        </a>
+    </div>
+</section>

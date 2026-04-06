@@ -1,0 +1,79 @@
+@{
+    ViewData["Title"] = "Login";
+    var selectedRole = ViewData["SelectedLoginRole"]?.ToString() ?? "Patient";
+    var loginError = ViewData["LoginErrorMessage"]?.ToString() ?? string.Empty;
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+
+            <div class="card shadow">
+                <div class="card-body p-4">
+                    <h3 class="text-center mb-4">HealthCareSmart</h3>
+                    <h5 class="text-center text-muted mb-4">Sign in to your account</h5>
+
+                    <form method="post" asp-action="Login" asp-controller="Account">
+                        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+                        <input type="hidden" name="role" id="roleInput" value="@selectedRole" />
+                        <input type="hidden" id="selectedRoleFromServer" value="@selectedRole" />
+
+                        <div class="mb-3">
+                            <label class="form-label">Email address</label>
+                            <input type="email" name="email" class="form-control"
+                                   placeholder="doctor@example.com" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" name="password" class="form-control"
+                                   placeholder="••••••••" required />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 mt-2">
+                            Login
+                        </button>
+                    </form>
+
+                    <div class="text-center mt-3">
+                        <span>Don't have an account?</span>
+                        <a asp-action="Register" asp-controller="Account">Register now</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const selectedRoleFromServer = document.getElementById('selectedRoleFromServer')?.value || 'Patient';
+        const roleInput = document.getElementById('roleInput');
+        if (roleInput) {
+            roleInput.value = selectedRoleFromServer;
+        }
+
+        const roleOptions = document.querySelectorAll('.role-option');
+        roleOptions.forEach(function (button) {
+            if (button.textContent?.trim() === selectedRoleFromServer) {
+                button.classList.add('active');
+            }
+
+            button.addEventListener('click', function () {
+                roleOptions.forEach(function (btn) {
+                    btn.classList.remove('active');
+                });
+                button.classList.add('active');
+                if (roleInput) {
+                    roleInput.value = button.textContent?.trim() || 'Patient';
+                }
+            });
+        });
+
+        const loginError = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(loginError));
+        if (loginError) {
+            window.alert(loginError);
+        }
+    </script>
+}

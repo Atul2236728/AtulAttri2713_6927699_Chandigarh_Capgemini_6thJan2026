@@ -1,0 +1,82 @@
+@* Appointments.cshtml *@
+@model List<HospitalWeb.Models.AppointmentDto>
+@{
+    ViewBag.Title = "My Appointments";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold mb-0" style="color:#1e3a5f"><i class="fas fa-calendar-alt me-2"></i>My Appointments</h4>
+    <a asp-action="Doctors" class="btn btn-primary btn-sm"><i class="fas fa-plus me-2"></i>New Appointment</a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="card p-5 text-center">
+        <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+        <h5 class="text-muted">No appointments yet</h5>
+        <a asp-action="Doctors" class="btn btn-primary mt-2">Book Your First Appointment</a>
+    </div>
+}
+else
+{
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table data-table mb-0">
+                    <thead>
+                        <tr>
+                            <th>Doctor</th>
+                            <th>Dept</th>
+                            <th>Date & Time</th>
+                            <th>Reason</th>
+                            <th>Fee</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var a in Model)
+                        {
+                            <tr>
+                                <td><div class="fw-semibold">@a.DoctorName</div></td>
+                                <td><span class="badge bg-light text-dark">@a.DepartmentName</span></td>
+                                <td>
+                                    <div>@a.AppointmentDate.ToString("dd MMM yyyy")</div>
+                                    <div class="text-muted small">@a.TimeSlot</div>
+                                </td>
+                                <td><small class="text-muted">@(a.Reason ?? "-")</small></td>
+                                <td class="fw-bold text-success">₹@a.ConsultationFee.ToString("N0")</td>
+                                <td>
+                                    <span class="status-badge status-@a.Status.ToLower()">@a.Status</span>
+                                    @if (a.HasPrescription) { <span class="badge" style="background:#8e44ad" >Rx</span> }
+                                    @if (a.HasBill) { <span class="badge bg-info">Bill</span> }
+                                </td>
+                                <td>
+                                    <div class="d-flex gap-1">
+                                        @if (a.HasBill)
+                                        {
+                                            <a asp-action="BillDetail" asp-route-appointmentId="@a.AppointmentId"
+                                               class="btn btn-sm btn-outline-success" title="View Bill">
+                                                <i class="fas fa-receipt"></i>
+                                            </a>
+                                        }
+                                        @if (a.Status == "Booked" || a.Status == "Confirmed")
+                                        {
+                                            <form asp-action="CancelAppointment" method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="@a.AppointmentId" />
+                                                <button type="submit" class="btn btn-sm btn-outline-danger btn-confirm"
+                                                        data-confirm="Cancel this appointment?">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </form>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}

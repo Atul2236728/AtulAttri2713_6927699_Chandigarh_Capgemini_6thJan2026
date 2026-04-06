@@ -1,0 +1,103 @@
+@* Login.cshtml *@
+@model HospitalWeb.Models.LoginViewModel
+@{
+    ViewBag.Title = "Login";
+    Layout = "_Layout";
+}
+
+<div class="min-vh-100 d-flex align-items-center justify-content-center" style="background:linear-gradient(135deg,#1e3a5f,#0077b6)">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-9">
+                <div class="card border-0 shadow-lg overflow-hidden" style="border-radius:20px">
+                    <div class="row g-0">
+                        <!-- Left panel -->
+                        <div class="col-md-5 d-none d-md-flex flex-column justify-content-center align-items-center p-5"
+                             style="background:linear-gradient(180deg,#1e3a5f,#0077b6);color:#fff">
+                            <i class="fas fa-hospital-alt fa-4x mb-4" style="opacity:.9"></i>
+                            <h3 class="fw-bold mb-2">MediCare</h3>
+                            <p class="text-center opacity-75 small">Smart Hospital Management System</p>
+                            <hr style="border-color:rgba(255,255,255,.2);width:80%">
+                            <div class="w-100">
+                                @foreach (var c in new[] {
+                                    new{role="Admin",icon="fa-user-shield",color="#ffd60a",desc="Full system control"},
+                                    new{role="Doctor",icon="fa-stethoscope",color="#48cae4",desc="Appointments & prescriptions"},
+                                    new{role="Patient",icon="fa-procedures",color="#80ffdb",desc="Book & track health"}
+                                })
+                                {
+                                    <div class="d-flex align-items-center gap-3 mb-3">
+                                        <i class="fas @c.icon fa-lg" style="color:@c.color;width:24px"></i>
+                                        <div>
+                                            <div class="fw-semibold small">@c.role</div>
+                                            <div style="font-size:.75rem;opacity:.7">@c.desc</div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <!-- Right panel -->
+                        <div class="col-md-7 p-5">
+                            <h4 class="fw-bold mb-1" style="color:#1e3a5f">Welcome back!</h4>
+                            <p class="text-muted small mb-4">Sign in to your MediCare account</p>
+
+                            @if (!ViewData.ModelState.IsValid)
+                            {
+                                <div class="alert alert-danger py-2">
+                                    <i class="fas fa-exclamation-circle me-2"></i>
+                                    @Html.ValidationSummary(true)
+                                </div>
+                            }
+
+                            <form asp-action="Login" asp-controller="Auth" method="post">
+                                <input type="hidden" asp-for="ReturnUrl" />
+                                <div class="mb-3">
+                                    <label asp-for="Email" class="form-label">Email Address</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text" style="border-radius:10px 0 0 10px;border-right:none"><i class="fas fa-envelope text-muted"></i></span>
+                                        <input asp-for="Email" class="form-control" placeholder="you@example.com" style="border-left:none;border-radius:0 10px 10px 0" />
+                                    </div>
+                                    <span asp-validation-for="Email" class="text-danger small"></span>
+                                </div>
+                                <div class="mb-4">
+                                    <label asp-for="Password" class="form-label">Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text" style="border-radius:10px 0 0 10px;border-right:none"><i class="fas fa-lock text-muted"></i></span>
+                                        <input asp-for="Password" type="password" class="form-control" placeholder="••••••••" style="border-left:none;border-right:none;border-radius:0" id="pwdInput"/>
+                                        <button type="button" class="input-group-text" style="border-radius:0 10px 10px 0;border-left:none;cursor:pointer" onclick="$('#pwdInput').attr('type',function(i,t){return t=='password'?'text':'password'})">
+                                            <i class="fas fa-eye text-muted"></i>
+                                        </button>
+                                    </div>
+                                    <span asp-validation-for="Password" class="text-danger small"></span>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 py-2 fw-bold" style="border-radius:12px;font-size:1rem">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                                </button>
+                            </form>
+
+                            <hr class="my-4">
+                            <p class="text-center text-muted small mb-3">Test Credentials</p>
+                            <div class="row g-2 mb-4">
+                                @foreach (var c in new[] {
+                                    new{label="Admin",email="admin@hospital.com",pwd="Admin@123",cls="danger"},
+                                    new{label="Doctor",email="rajesh.sharma@hospital.com",pwd="Admin@123",cls="info"},
+                                    new{label="Patient",email="rahul.verma@gmail.com",pwd="Admin@123",cls="success"}
+                                })
+                                {
+                                    <div class="col-4">
+                                        <button type="button" class="btn btn-outline-@c.cls btn-sm w-100 py-2"
+                                                onclick="$('#Email').val('@c.email');$('#Password').val('@c.pwd')">
+                                            <i class="fas fa-@(c.label=="Admin"?"user-shield":c.label=="Doctor"?"stethoscope":"user") me-1"></i>@c.label
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                            <p class="text-center small">Don't have an account?
+                                <a asp-controller="Auth" asp-action="Register" class="text-primary fw-bold">Register as Patient</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,116 @@
+@using System.Text.Json
+@{
+    ViewData["Title"] = "Book Appointment";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body p-4">
+                <h5 class="mb-4"><i class="bi bi-calendar-plus text-primary me-2"></i>Book New Appointment</h5>
+
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger">@ViewBag.Error</div>
+                }
+
+                @if (ViewBag.SelectedDoctor != null)
+                {
+                    var doc = (Dictionary<string, object>)ViewBag.SelectedDoctor;
+                    <form method="post">
+                        <div class="mb-4 p-3 border rounded bg-light">
+                            <h6 class="mb-2">Selected Doctor</h6>
+                            <p class="mb-1"><strong>@doc["fullName"]</strong></p>
+                            <p class="mb-1">Fee: @string.Format("{0:C}", doc["consultationFee"])</p>
+                            <p class="mb-0 text-muted">
+                                Specializations:
+                                @{ 
+                                    if (doc["specializations"] is JsonElement specs)
+                                    {
+                                        var items = specs.EnumerateArray().Select(x => x.GetString() ?? string.Empty);
+                                        @string.Join(", ", items)
+                                    }
+                                }
+                            </p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Appointment Date & Time</label>
+                            <input type="datetime-local" name="appointmentDate" class="form-control" required />
+                        </div>
+                        <input type="hidden" name="doctorId" value="@ViewBag.DoctorId" />
+
+                        <div class="mb-3">
+                            <label class="form-label">Notes</label>
+                            <textarea name="notes" class="form-control" rows="3" placeholder="Optional notes..."></textarea>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-lg me-1"></i> Book Appointment
+                            </button>
+                            <a asp-controller="Doctors" asp-action="Index" class="btn btn-outline-secondary">Browse Doctors</a>
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <div class="mb-4">
+                        <p class="text-muted">Choose a health concern, then pick a matching doctor from the list below.</p>
+                        <div class="d-flex flex-wrap gap-2 mb-3">
+                            @foreach (var field in (Dictionary<string, string>)ViewBag.FieldCategories)
+                            {
+                                <a asp-action="Create" asp-route-specialization="@field.Key" class="btn btn-outline-primary @(string.Equals(ViewBag.SelectedField as string, field.Key, StringComparison.OrdinalIgnoreCase) ? "active" : "")">@field.Key</a>
+                            }
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(ViewBag.SelectedField))
+                    {
+                        <div class="alert alert-info">Showing doctors for: <strong>@ViewBag.SelectedField</strong></div>
+                    }
+
+                    @if (ViewBag.Doctors != null && ((List<Dictionary<string, object>>)ViewBag.Doctors).Count > 0)
+                    {
+                        <div class="row g-3">
+                            @foreach (var doc in (List<Dictionary<string, object>>)ViewBag.Doctors)
+                            {
+                                <div class="col-md-6">
+                                    <div class="card border-0 shadow-sm">
+                                        <div class="card-body">
+                                            <h6>@doc["fullName"]</h6>
+                                            <p class="mb-1 text-muted">Fee: @string.Format("{0:C}", doc["consultationFee"])</p>
+                                            <p class="mb-1 text-muted">
+                                                Specializations:
+                                                @{ 
+                                                    if (doc["specializations"] is JsonElement specs)
+                                                    {
+                                                        var items = specs.EnumerateArray().Select(x => x.GetString() ?? string.Empty);
+                                                        @string.Join(", ", items)
+                                                    }
+                                                }
+                                            </p>
+                                            @{ var doctorIdValue = doc["id"] is JsonElement idElement ? idElement.GetInt32() : Convert.ToInt32(doc["id"] ?? 0); }
+                                            <div class="d-grid gap-2">
+                                                <a asp-action="Create" asp-route-doctorId="@doctorIdValue" class="btn btn-sm btn-primary">Select this doctor</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">
+                            @if (!string.IsNullOrEmpty(ViewBag.SelectedField))
+                            {
+                                <span>No doctors found for this field yet. </span>
+                            }
+                            <span>Please choose one of the options above or <a asp-controller="Doctors" asp-action="Index">browse all doctors</a>.</span>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,100 @@
+@model SmartHealthcare.Models.DTOs.LoginDTO
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div class="row w-100 justify-content-center">
+        <div class="col-md-5 col-lg-4">
+            <div class="card border-0 shadow-lg">
+                <!-- Header -->
+                <div class="card-header bg-primary text-white p-4 text-center">
+                    <h1 class="mb-2"><i class="bi bi-hospital"></i></h1>
+                    <h3 class="mb-0">Smart Healthcare</h3>
+                    <p class="mb-0 small mt-2">Login to Your Account</p>
+                </div>
+
+                <!-- Body -->
+                <div class="card-body p-4">
+                    <form asp-action="Login" method="post" novalidate>
+                        <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
+
+                        <!-- Email -->
+                        <div class="mb-4">
+                            <label asp-for="Email" class="form-label fw-bold">
+                                <i class="bi bi-envelope"></i> Email Address
+                            </label>
+                            <input asp-for="Email" class="form-control form-control-lg" placeholder="Enter your email" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-4">
+                            <label asp-for="Password" class="form-label fw-bold">
+                                <i class="bi bi-key"></i> Password
+                            </label>
+                            <input asp-for="Password" class="form-control form-control-lg" type="password" placeholder="Enter your password" />
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Remember Me -->
+                        <div class="form-check mb-4">
+                            <input type="checkbox" class="form-check-input" id="rememberMe" />
+                            <label class="form-check-label" for="rememberMe">
+                                Remember me
+                            </label>
+                        </div>
+
+                        <!-- Login Button -->
+                        <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">
+                            <i class="bi bi-box-arrow-in-right"></i> Login
+                        </button>
+
+                        <!-- Info Message -->
+                        <div class="alert alert-info small mb-0" role="alert">
+                            <strong>Demo Credentials:</strong><br />
+                            Email: admin@healthcare.com<br />
+                            Password: Admin@123
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Footer -->
+                <div class="card-footer bg-light p-4 text-center">
+                    <p class="mb-0">
+                        Don't have an account?
+                        <a asp-action="Register" class="text-decoration-none fw-bold">
+                            <i class="bi bi-person-plus"></i> Register here
+                        </a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Help Text -->
+            <div class="alert alert-light mt-4 text-center" role="alert">
+                <small><i class="bi bi-info-circle"></i> For issues or inquiries, contact support@healthcare.com</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<style>
+    body {
+        min-height: 100vh;
+    }
+
+    .card {
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+</style>

@@ -1,0 +1,84 @@
+@model IEnumerable<SmartHealthcare.Models.DTOs.UserDTO>
+@{
+    ViewData["Title"] = "Manage Users";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h1 class="mb-3"><i class="bi bi-people-fill"></i> User Management</h1>
+            <p class="text-muted">Manage all system users including patients, doctors, and admins</p>
+        </div>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-hover align-middle table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th><i class="bi bi-hash"></i> ID</th>
+                        <th><i class="bi bi-person"></i> Full Name</th>
+                        <th><i class="bi bi-envelope"></i> Email</th>
+                        <th><i class="bi bi-briefcase"></i> Role</th>
+                        <th><i class="bi bi-calendar-event"></i> Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td class="fw-bold">@user.Id</td>
+                            <td>@user.FullName</td>
+                            <td>@user.Email</td>
+                            <td>
+                                <span class="badge bg-@GetRoleBg(user.Role)">@user.Role</span>
+                            </td>
+                            <td>@user.CreatedAt.ToString("dd-MMM-yyyy HH:mm")</td>
+                            <td>
+                                <form asp-action="DeleteUser" method="post" class="d-inline" onsubmit="return confirm('Are you sure?');">
+                                    <input type="hidden" name="id" value="@user.Id" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center py-5">
+            <h4><i class="bi bi-info-circle"></i> No Users Found</h4>
+            <p class="mb-0">There are no users in the system yet.</p>
+        </div>
+    }
+</div>
+
+@functions {
+    private string GetRoleBg(string role)
+    {
+        return role?.ToLower() switch
+        {
+            "admin" => "danger",
+            "doctor" => "success",
+            "patient" => "info",
+            _ => "secondary"
+        };
+    }
+}
+
+<style>
+    .table-hover tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .badge {
+        padding: 0.35em 0.65em;
+        font-weight: 600;
+    }
+</style>

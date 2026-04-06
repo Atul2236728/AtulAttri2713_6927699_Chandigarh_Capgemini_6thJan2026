@@ -1,0 +1,56 @@
+@* Departments.cshtml *@
+@model List<HospitalWeb.Models.DepartmentDto>
+@{
+    ViewBag.Title = "Departments";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold mb-0" style="color:#1e3a5f"><i class="fas fa-hospital me-2"></i>Departments</h4>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDeptModal">
+        <i class="fas fa-plus me-2"></i>Add Department
+    </button>
+</div>
+
+<div class="row g-4">
+    @foreach (var d in Model)
+    {
+        <div class="col-xl-3 col-md-4 col-sm-6">
+            <div class="dept-card">
+                <div class="dept-icon"><i class="fas @d.IconClass"></i></div>
+                <div class="dept-name">@d.DepartmentName</div>
+                <div class="dept-count mb-2">@d.DoctorCount doctor@(d.DoctorCount != 1 ? "s" : "")</div>
+                <p class="text-muted small">@d.Description</p>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Add Department Modal -->
+<div class="modal fade" id="addDeptModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content" style="border-radius:16px">
+            <div class="modal-header" style="background:#1e3a5f;color:#fff;border-radius:16px 16px 0 0">
+                <h5 class="modal-title"><i class="fas fa-hospital me-2"></i>Add Department</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form asp-action="CreateDepartment" method="post">
+                    <div class="mb-3">
+                        <label class="form-label">Department Name *</label>
+                        <input name="departmentName" class="form-control" placeholder="e.g. Cardiology" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea name="description" class="form-control" rows="2" placeholder="Brief description"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Icon Class (FontAwesome)</label>
+                        <input name="iconClass" class="form-control" placeholder="e.g. fa-heartbeat" value="fa-stethoscope" />
+                        <small class="text-muted">Visit <a href="https://fontawesome.com/icons" target="_blank">fontawesome.com</a> for icons</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100"><i class="fas fa-save me-2"></i>Create</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

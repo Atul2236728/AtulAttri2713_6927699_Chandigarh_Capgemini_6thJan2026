@@ -1,0 +1,210 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    var token = Context.Session.GetString("Token");
+}
+
+<section class="hero-panel mb-5">
+    <div class="hero-copy">
+        <span class="eyebrow"><i class="bi bi-shield-check"></i> Connected Care Platform</span>
+        <h1>Smart Healthcare Management System</h1>
+        <p class="lead">Your complete solution for managing patients, doctors, appointments, prescriptions, and care workflows from one intelligent dashboard.</p>
+        <div class="hero-actions">
+            @if (token == null)
+            {
+                <a asp-controller="Account" asp-action="Register" class="btn btn-light btn-lg">
+                    <i class="bi bi-person-plus"></i> Get Started
+                </a>
+                <a asp-controller="Doctor" asp-action="Index" class="btn btn-outline-light btn-lg">
+                    <i class="bi bi-search"></i> Browse Doctors
+                </a>
+            }
+            else
+            {
+                <a asp-controller="Dashboard" asp-action="Index" class="btn btn-light btn-lg">
+                    <i class="bi bi-speedometer2"></i> Go to Dashboard
+                </a>
+                <a asp-controller="Appointment" asp-action="Create" class="btn btn-outline-light btn-lg">
+                    <i class="bi bi-calendar-check"></i> Book Appointment
+                </a>
+            }
+        </div>
+    </div>
+    <div class="hero-stats">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="bi bi-clock-fill"></i></div>
+            <div>
+                <div class="stat-value">24/7</div>
+                <div class="stat-label">Service Access</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="bi bi-lightning-fill"></i></div>
+            <div>
+                <div class="stat-value">Fast</div>
+                <div class="stat-label">Appointment Booking</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="bi bi-shield-lock-fill"></i></div>
+            <div>
+                <div class="stat-value">Secure</div>
+                <div class="stat-label">Data Protection</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="feature-grid">
+    <article class="feature-card">
+        <div class="feature-icon bg-primary"><i class="bi bi-person-lines-fill"></i></div>
+        <h3><i class="bi bi-people"></i> For Patients</h3>
+        <p>Book appointments with qualified doctors, review your care history, manage your medical profile, and receive digital prescriptions.</p>
+        <a href="@Url.Action("Index", "Doctor")" class="btn btn-sm btn-outline-primary mt-3">Learn More</a>
+    </article>
+    
+    <article class="feature-card">
+        <div class="feature-icon bg-success"><i class="bi bi-stethoscope"></i></div>
+        <h3><i class="bi bi-hospital"></i> For Doctors</h3>
+        <p>Manage your patient schedule, track visits efficiently, issue prescriptions, and build your professional profile online.</p>
+        <a href="@Url.Action("Register", "Account")" class="btn btn-sm btn-outline-success mt-3">Register Now</a>
+    </article>
+    
+    <article class="feature-card">
+        <div class="feature-icon bg-info"><i class="bi bi-graph-up"></i></div>
+        <h3><i class="bi bi-speedometer2"></i> For Administrators</h3>
+        <p>Monitor system performance, manage users, generate health reports, and ensure smooth operations of the entire healthcare network.</p>
+        <a href="@Url.Action("Login", "Account")" class="btn btn-sm btn-outline-info mt-3">Admin Login</a>
+    </article>
+</section>
+
+<!-- Why Choose Us Section -->
+<section class="mt-5 pt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h2 class="mb-4">Why Choose Smart Healthcare?</h2>
+            <ul class="list-unstyled">
+                <li class="mb-3">
+                    <i class="bi bi-check-circle-fill text-success"></i>
+                    <strong class="ms-2">Easy Appointment Booking</strong>
+                    <p class="ms-4 text-muted">Book appointments in seconds with our intuitive scheduling system</p>
+                </li>
+                <li class="mb-3">
+                    <i class="bi bi-check-circle-fill text-success"></i>
+                    <strong class="ms-2">Qualified Healthcare Professionals</strong>
+                    <p class="ms-4 text-muted">Access to verified and experienced doctors across multiple specializations</p>
+                </li>
+                <li class="mb-3">
+                    <i class="bi bi-check-circle-fill text-success"></i>
+                    <strong class="ms-2">Digital Prescriptions</strong>
+                    <p class="ms-4 text-muted">Receive and manage prescriptions digitally from anywhere</p>
+                </li>
+                <li class="mb-3">
+                    <i class="bi bi-check-circle-fill text-success"></i>
+                    <strong class="ms-2">Secure & Private</strong>
+                    <p class="ms-4 text-muted">Your medical data is encrypted and protected with industry-standard security</p>
+                </li>
+                <li class="mb-3">
+                    <i class="bi bi-check-circle-fill text-success"></i>
+                    <strong class="ms-2">Available 24/7</strong>
+                    <p class="ms-4 text-muted">Access our platform anytime, anywhere on any device</p>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <div class="card border-0 shadow-lg bg-light">
+                <div class="card-body p-5 text-center">
+                    <h3 class="mb-4"><i class="bi bi-heart-pulse-fill text-danger fs-1"></i></h3>
+                    <h4 class="mb-3\">Your Health, Our Priority</h4>
+                    <p class="text-muted mb-4\">We're committed to providing accessible, affordable, and quality healthcare services to everyone.</p>
+                    @if (token == null)
+                    {
+                        <a href="@Url.Action("Register", "Account")" class="btn btn-primary btn-lg">Start Your Journey</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .hero-panel {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 1rem;
+        padding: 3rem 2rem;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+    }
+
+    .feature-card {
+        background: white;
+        border-radius: 0.75rem;
+        padding: 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        border-left: 4px solid #0d6efd;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .feature-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 4rem;
+        height: 4rem;
+        border-radius: 0.75rem;
+        color: white;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .stat-card {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 1rem;
+        border-radius: 0.5rem;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .stat-icon {
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .stat-value {
+        font-weight: 600;
+        font-size: 1.25rem;
+    }
+
+    .stat-label {
+        font-size: 0.875rem;
+        opacity: 0.8;
+    }
+</style>
+    <article class="feature-card">
+        <div class="feature-icon"><i class="fa-solid fa-chart-line"></i></div>
+        <h3>Admin</h3>
+        <p>Oversee users, monitor activity, and keep operations organized at a glance.</p>
+    </article>
+</section>
+</div>

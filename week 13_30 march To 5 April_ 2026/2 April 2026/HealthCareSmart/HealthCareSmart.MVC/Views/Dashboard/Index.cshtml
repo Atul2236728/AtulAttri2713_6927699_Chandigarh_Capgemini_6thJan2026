@@ -1,0 +1,85 @@
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="stat-card" style="background: linear-gradient(135deg,#0d6efd,#6610f2)">
+            <div style="font-size:2rem"><i class="bi bi-calendar-check"></i></div>
+            <div style="font-size:1.8rem; font-weight:bold;">@(ViewBag.AppointmentCount ?? 0)</div>
+            <div>Total Appointments</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card" style="background: linear-gradient(135deg,#198754,#20c997)">
+            <div style="font-size:2rem"><i class="bi bi-person-badge"></i></div>
+            <div style="font-size:1.8rem; font-weight:bold;">@(ViewBag.DoctorCount ?? 0)</div>
+            <div>Doctors</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card" style="background: linear-gradient(135deg,#fd7e14,#ffc107)">
+            <div style="font-size:2rem"><i class="bi bi-people"></i></div>
+            <div style="font-size:1.8rem; font-weight:bold;">@(ViewBag.PatientCount ?? 0)</div>
+            <div>Patients</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card" style="background: linear-gradient(135deg,#dc3545,#e91e8c)">
+            <div style="font-size:2rem"><i class="bi bi-clock-history"></i></div>
+            <div style="font-size:1.8rem; font-weight:bold;">@(ViewBag.PendingCount ?? 0)</div>
+            <div>Pending</div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0">Recent Appointments</h5>
+            <a asp-controller="Appointments" asp-action="Create" class="btn btn-primary btn-sm">
+                <i class="bi bi-plus-lg"></i> New Appointment
+            </a>
+        </div>
+
+        @if (ViewBag.Appointments != null && ViewBag.Appointments.Count > 0)
+        {
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Doctor</th>
+                        <th>Patient</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var appt in ViewBag.Appointments)
+                    {
+                        <tr>
+                            <td>#@appt["id"]</td>
+                            <td>@appt["appointmentDate"]</td>
+                            <td><i class="bi bi-person-badge text-primary me-1"></i>@appt["doctorName"]</td>
+                            <td>@appt["patientName"]</td>
+                            <td>
+                                @{
+                                    var status = appt["status"]?.ToString();
+                                    var badge = status == "Confirmed" ? "success" : status == "Cancelled" ? "danger" : "warning";
+                                }
+                                <span class="badge bg-@badge">@status</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="text-center py-5 text-muted">
+                <i class="bi bi-calendar-x" style="font-size:3rem"></i>
+                <p class="mt-2">No appointments yet. <a asp-controller="Appointments" asp-action="Create">Book one now</a></p>
+            </div>
+        }
+    </div>
+</div>

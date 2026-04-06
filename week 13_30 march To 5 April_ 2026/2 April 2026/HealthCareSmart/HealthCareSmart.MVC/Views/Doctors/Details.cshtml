@@ -1,0 +1,49 @@
+@using System.Text.Json
+@{
+    ViewData["Title"] = "Doctor Details";
+    var doctor = ViewBag.Doctor as Dictionary<string, object>;
+    var doctorId = doctor != null && doctor["id"] is JsonElement idElement ? idElement.GetInt32() : 0;
+}
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h3 class="card-title mb-3">Doctor Details</h3>
+
+        @if (doctor == null)
+        {
+            <div class="alert alert-warning">Doctor information could not be loaded.</div>
+        }
+        else
+        {
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Name</dt>
+                        <dd class="col-sm-8">@doctor["fullName"]</dd>
+
+                        <dt class="col-sm-4">Phone</dt>
+                        <dd class="col-sm-8">@doctor["phoneNumber"]</dd>
+
+                        <dt class="col-sm-4">Consultation Fee</dt>
+                        <dd class="col-sm-8">@string.Format("{0:C}", doctor["consultationFee"])</dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <h6>Specializations</h6>
+                    <p class="mb-3 text-muted">
+                        @if (doctor["specializations"] is JsonElement specs)
+                        {
+                            var items = specs.EnumerateArray().Select(x => x.GetString() ?? string.Empty);
+                            @string.Join(", ", items)
+                        }
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex gap-2">
+                <a asp-controller="Appointments" asp-action="Create" asp-route-doctorId="@doctorId" class="btn btn-primary">Book Appointment</a>
+                <a asp-action="Index" class="btn btn-outline-secondary">Back to Doctors</a>
+            </div>
+        }
+    </div>
+</div>

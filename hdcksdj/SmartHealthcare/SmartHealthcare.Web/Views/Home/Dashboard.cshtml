@@ -1,0 +1,162 @@
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="dashboard-header">
+    <h1>Welcome back, @User.FindFirst("name")?.Value!</h1>
+    <p>@(User.IsInRole("Doctor") ? "Doctor Dashboard - Manage Your Patients" : "Patient Dashboard - Your Smart Healthcare Management Hub")</p>
+</div>
+
+@if (User.IsInRole("Doctor"))
+{
+    <!-- DOCTOR DASHBOARD -->
+    <div class="row">
+        <!-- Quick Stats -->
+        <div class="col-md-4 mb-4">
+            <div class="card-custom">
+                <div class="card-header-custom">
+                    👥 My Patients
+                </div>
+                <div class="card-body-custom">
+                    <h3 style="color: #2d7659; margin: 0;">-</h3>
+                    <p>Patients registered with you</p>
+                    <a href="/Patients/" class="btn btn-primary-custom" style="font-size: 0.9rem;">View All</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card-custom">
+                <div class="card-header-custom">
+                    📅 Appointments
+                </div>
+                <div class="card-body-custom">
+                    <h3 style="color: #2d7659; margin: 0;">-</h3>
+                    <p>Upcoming patient appointments</p>
+                    <a href="/Appointments/" class="btn btn-primary-custom" style="font-size: 0.9rem;">View All</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card-custom">
+                <div class="card-header-custom">
+                    👤 Profile
+                </div>
+                <div class="card-body-custom">
+                    <h3 style="color: #2d7659; margin: 0;">📋</h3>
+                    <p>View and edit your profile</p>
+                    <a href="/Auth/Profile" class="btn btn-primary-custom" style="font-size: 0.9rem;">Edit Profile</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Doctor Info Section -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card-custom">
+                <div class="card-header-custom">
+                    ℹ️ Doctor Information
+                </div>
+                <div class="card-body-custom">
+                    <p><strong>Role:</strong> Medical Professional</p>
+                    <p><strong>Access:</strong> View your patients, manage appointments, and update your profile</p>
+                    <p style="margin: 0;"><strong>Quick Links:</strong> 
+                        <a href="/Patients/">View Patients</a> | 
+                        <a href="/Auth/Profile">Edit Profile</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <!-- PATIENT DASHBOARD -->
+    <div class="row">
+        <!-- Quick Stats -->
+        <div class="col-md-4 mb-4">
+            <div class="card-custom">
+                <div class="card-header-custom">
+                    📅 Upcoming Appointments
+                </div>
+                <div class="card-body-custom">
+                    <h3 style="color: #2d7659; margin: 0;">2</h3>
+                    <p>You have 2 scheduled appointments</p>
+                    <a href="/Appointments/" class="btn btn-primary-custom" style="font-size: 0.9rem;">View All</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card-custom">
+                <div class="card-header-custom">
+                    👨‍⚕️ Your Doctors
+                </div>
+                <div class="card-body-custom">
+                    <h3 style="color: #2d7659; margin: 0;">3</h3>
+                    <p>Doctors you've consulted with</p>
+                    <a href="/Doctors/" class="btn btn-primary-custom" style="font-size: 0.9rem;">Browse Doctors</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card-custom">
+                <div class="card-header-custom">
+                    💊 Prescriptions
+                </div>
+                <div class="card-body-custom">
+                    <h3 style="color: #2d7659; margin: 0;">1</h3>
+                    <p>Active prescriptions</p>
+                    <a href="/Prescriptions/" class="btn btn-primary-custom" style="font-size: 0.9rem;">View Details</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Appointments -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card-custom">
+                <div class="card-header-custom">
+                    📋 Recent Appointments
+                </div>
+                <div class="card-body-custom">
+                    <div class="appointment-item">
+                        <div class="appointment-date">📆 April 10, 2026 - 2:00 PM</div>
+                        <div class="appointment-doctor"><strong>Dr. Sarah Johnson</strong> - Cardiology</div>
+                        <span class="badge-custom">Confirmed</span>
+                    </div>
+                    <div class="appointment-item">
+                        <div class="appointment-date">📆 April 15, 2026 - 10:30 AM</div>
+                        <div class="appointment-doctor"><strong>Dr. James Wilson</strong> - General Checkup</div>
+                        <span class="badge-custom">Pending</span>
+                    </div>
+                    <a href="/Appointments/" class="btn btn-primary-custom" style="font-size: 0.9rem;">See All Appointments</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="col-md-4">
+            <div class="card-custom">
+                <div class="card-header-custom">
+                    ⚡ Quick Actions
+                </div>
+                <div class="card-body-custom">
+                    <a href="/Appointments/Book" class="btn btn-primary-custom btn-block-custom" style="margin-bottom: 0.5rem; font-size: 0.95rem;">
+                        📅 Book Appointment
+                    </a>
+                    <a href="/Doctors/" class="btn btn-primary-custom btn-block-custom" style="margin-bottom: 0.5rem; font-size: 0.95rem;">
+                        🔍 Find Doctor
+                    </a>
+                    <a href="/Auth/Profile" class="btn btn-primary-custom btn-block-custom" style="font-size: 0.95rem;">
+                        👤 Edit Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

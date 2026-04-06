@@ -1,0 +1,146 @@
+@model SmartHealthcare.Models.DTOs.PagedResult<SmartHealthcare.Models.DTOs.DoctorDTO>
+@{
+    ViewData["Title"] = "Find a Doctor";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h1 class="mb-4"><i class="bi bi-stethoscope"></i> Our Medical Professionals</h1>
+            
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <form method="get" class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Search by Specialization</label>
+                            <input type="text" name="specialization" value="@ViewBag.Specialization" class="form-control form-control-lg" placeholder="e.g., Cardiology, Dermatology" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Search by Name</label>
+                            <input type="text" name="name" value="@ViewBag.Name" class="form-control form-control-lg" placeholder="Doctor's full name" />
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary btn-lg w-100"><i class="bi bi-search"></i> Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model?.Items != null && Model.Items.Any())
+    {
+        <div class="row g-4 mb-4">
+            @foreach (var doctor in Model.Items)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm transition-all doctor-card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="flex-grow-1">
+                                    <h5 class="card-title mb-1"><i class="bi bi-person-circle"></i> Dr. @doctor.FullName</h5>
+                                    <small class="text-muted d-block mb-2">@string.Join(", ", doctor.Specializations ?? new List<string>())</small>
+                                </div>
+                                <span class="badge bg-@(doctor.IsAvailable ? "success" : "secondary")">
+                                    @(doctor.IsAvailable ? "Available" : "Unavailable")
+                                </span>
+                            </div>
+
+                            <hr class="my-2" />
+
+                            <div class="doctor-info">
+                                <p class="mb-2">
+                                    <strong><i class="bi bi-envelope"></i> Email:</strong><br />
+                                    <small>@doctor.Email</small>
+                                </p>
+                                <p class="mb-2">
+                                    <strong><i class="bi bi-telephone"></i> Phone:</strong><br />
+                                    <small>@doctor.Phone</small>
+                                </p>
+                                <p class="mb-2">
+                                    <strong><i class="bi bi-briefcase"></i> Experience:</strong><br />
+                                    <small>@doctor.YearsOfExperience years</small>
+                                </p>
+                                <p class="mb-2">
+                                    <strong><i class="bi bi-cash-coin"></i> Consultation:</strong><br />
+                                    <small class="text-success">Rs. @doctor.ConsultationFee</small>
+                                </p>
+                                <p class="mb-3">
+                                    <strong><i class="bi bi-credit-card"></i> License:</strong><br />
+                                    <small>@doctor.LicenseNumber</small>
+                                </p>
+                            </div>
+
+                            <hr class="my-2" />
+
+                            <div class="d-grid gap-2">
+                                <a asp-action="Details" asp-route-id="@doctor.Id" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-info-circle"></i> View Details
+                                </a>
+                                @if (doctor.IsAvailable)
+                                {
+                                    <a asp-controller="Appointment" asp-action="Create" class="btn btn-success btn-sm">
+                                        <i class="bi bi-calendar-check"></i> Book Appointment
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        @if (Model.PageNumber > 1 || Model.Items.Count() == Model.PageSize)
+        {
+            <nav aria-label="Pagination" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    @if (Model.PageNumber > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1&specialization=@ViewBag.Specialization&name=@ViewBag.Name">First</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=@(Model.PageNumber - 1)&specialization=@ViewBag.Specialization&name=@ViewBag.Name">Previous</a>
+                        </li>
+                    }
+                    <li class="page-item active">
+                        <span class="page-link">Page @Model.PageNumber of @Math.Ceiling((decimal)Model.TotalCount / 10)</span>
+                    </li>
+                    @if (Model.PageNumber * 10 < Model.TotalCount)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="?page=@(Model.PageNumber + 1)&specialization=@ViewBag.Specialization&name=@ViewBag.Name">Next</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        }
+    }
+    else
+    {
+        <div class="alert alert-info text-center py-5" role="alert">
+            <h4 class="alert-heading"><i class="bi bi-info-circle"></i> No Doctors Found</h4>
+            <p>Try adjusting your search criteria or browse all available doctors.</p>
+            <a href="@Url.Action("Index")" class="btn btn-outline-info">Clear Filters</a>
+        </div>
+    }
+</div>
+
+<style>
+    .doctor-card {
+        transition: all 0.3s ease !important;
+    }
+
+    .doctor-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .doctor-info {
+        font-size: 0.95rem;
+    }
+
+    .transition-all {
+        transition: all 0.3s ease;
+    }
+</style>

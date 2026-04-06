@@ -1,0 +1,56 @@
+@{
+    ViewData["Title"] = "Patients";
+    var appointments = ViewBag.Appointments as List<Dictionary<string, object>> ?? new List<Dictionary<string, object>>();
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2>My Appointments</h2>
+        <p class="text-muted">Review your booked appointments, assigned doctor, and prescription details.</p>
+    </div>
+    <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-secondary">
+        Back to Dashboard
+    </a>
+</div>
+
+@if (!appointments.Any())
+{
+    <div class="alert alert-info">
+        No appointments were found for your account yet.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Doctor</th>
+                    <th>Status</th>
+                    <th>Notes</th>
+                    <th>Prescription</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var appt in appointments)
+                {
+                    <tr>
+                        <td>@(appt.TryGetValue("appointmentDate", out var dateValue) ? dateValue : "—")</td>
+                        <td>@(appt.TryGetValue("doctorName", out var doctorName) ? doctorName : "—")</td>
+                        <td>@(appt.TryGetValue("status", out var status) ? status : "—")</td>
+                        <td>@(appt.TryGetValue("notes", out var notes) ? notes : "—")</td>
+                        <td>
+                            <div>
+                                <strong>@(appt.TryGetValue("prescriptionInstructions", out var instructions) ? instructions : "No instructions")</strong>
+                            </div>
+                            <div class="text-muted small">
+                                @(appt.TryGetValue("prescriptionMedicines", out var medicines) && !string.IsNullOrWhiteSpace(medicines?.ToString()) ? medicines : "No medicines assigned")
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

@@ -1,0 +1,163 @@
+@model SmartHealthcare.Models.DTOs.AppointmentDTO
+@{
+    ViewData["Title"] = "Appointment Details";
+    var prescription = ViewBag.Prescription as SmartHealthcare.Models.DTOs.PrescriptionDTO;
+}
+
+<div class="container mt-4">
+    <a href="@Url.Action("Index")" class="btn btn-outline-secondary mb-3"><i class="bi bi-arrow-left"></i> Back to Appointments</a>
+
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <!-- Main Appointment Card -->
+            <div class="card border-0 shadow-lg mb-4">
+                <div class="card-header bg-primary text-white p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="mb-0"><i class="bi bi-calendar-check"></i> Appointment #@Model.Id</h3>
+                        <span class="badge bg-@GetStatusBg(Model.Status) fs-6">@Model.Status</span>
+                    </div>
+                </div>
+
+                <div class="card-body p-4">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5 class="mb-3"><i class="bi bi-person-circle"></i> Patient Information</h5>
+                            <div class="info-box">
+                                <p class="mb-2">
+                                    <strong>Name:</strong><br />
+                                    <span class="ms-3">@Model.PatientName</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="mb-3"><i class="bi bi-hospital"></i> Doctor Information</h5>
+                            <div class="info-box">
+                                <p class="mb-2">
+                                    <strong>Name:</strong><br />
+                                    <span class="ms-3">Dr. @Model.DoctorName</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="mb-3"><i class="bi bi-clock"></i> Appointment Details</h5>
+                            <div class="info-box">
+                                <p class="mb-3">
+                                    <strong>Date &amp; Time:</strong><br />
+                                    <span class="ms-3">@Model.AppointmentDate.ToString("dddd, dd-MMMM-yyyy HH:mm")</span>
+                                </p>
+                                <p class="mb-0">
+                                    <strong>Created:</strong><br />
+                                    <span class="ms-3">@Model.CreatedAt.ToString("dd-MMM-yyyy HH:mm")</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="mb-3"><i class="bi bi-sticky"></i> Notes</h5>
+                            <div class="info-box">
+                                @if (!string.IsNullOrEmpty(Model.Notes))
+                                {
+                                    <p class="mb-0">@Model.Notes</p>
+                                }
+                                else
+                                {
+                                    <p class="mb-0 text-muted">No additional notes</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prescription Card (if available) -->
+            @if (prescription != null)
+            {
+                <div class="card border-0 shadow-lg">
+                    <div class="card-header bg-success text-white p-4">
+                        <h3 class="mb-0"><i class="bi bi-prescription"></i> Prescription</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="mb-4">
+                            <h5 class="mb-2"><strong>Diagnosis:</strong></h5>
+                            <p class="ms-3">@prescription.Diagnosis</p>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(prescription.Notes))
+                        {
+                            <div class="mb-4">
+                                <h5 class="mb-2"><strong>Medical Notes:</strong></h5>
+                                <p class="ms-3">@prescription.Notes</p>
+                            </div>
+                        }
+
+                        @if (prescription.Medicines?.Count > 0)
+                        {
+                            <div class="mb-0">
+                                <h5 class="mb-3"><strong><i class="bi bi-capsule"></i> Medicines</strong></h5>
+                                <div class="row g-3">
+                                    @foreach (var medicine in prescription.Medicines)
+                                    {
+                                        <div class="col-md-6">
+                                            <div class="medicine-box">
+                                                <h6 class="mb-2">@medicine.Name</h6>
+                                                <p class="mb-1"><strong>Dosage:</strong> @medicine.Dosage</p>
+                                                <p class="mb-1"><strong>Duration:</strong> @medicine.Duration</p>
+                                                @if (!string.IsNullOrEmpty(medicine.Instructions))
+                                                {
+                                                    <p class="mb-0"><strong>Instructions:</strong> @medicine.Instructions</p>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info text-center py-4">
+                    <p class="mb-0"><i class="bi bi-info-circle"></i> No prescription available for this appointment yet.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@functions {
+    private string GetStatusBg(string status)
+    {
+        return status?.ToLower() switch
+        {
+            "pending" => "warning",
+            "completed" => "success",
+            "cancelled" => "danger",
+            _ => "secondary"
+        };
+    }
+}
+
+<style>
+    .info-box {
+        background-color: #f8f9fa;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        border-left: 4px solid #0d6efd;
+    }
+
+    .medicine-box {
+        background-color: #f0f8ff;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        border-left: 4px solid #198754;
+    }
+
+    .card {
+        border-radius: 0.5rem;
+    }
+</style>

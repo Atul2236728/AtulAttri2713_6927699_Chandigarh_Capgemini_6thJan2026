@@ -1,0 +1,143 @@
+@model HospitalWeb.Models.AdminDashboardDto
+@{
+    ViewBag.Title = "Admin Dashboard";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold mb-0" style="color:#1e3a5f"><i class="fas fa-tachometer-alt me-2"></i>Admin Dashboard</h4>
+        <small class="text-muted">Welcome back, @User.Identity?.Name</small>
+    </div>
+    <div class="text-muted small"><i class="fas fa-calendar me-1"></i>@DateTime.Now.ToString("MMMM dd, yyyy")</div>
+</div>
+
+<!-- STAT CARDS -->
+<div class="row g-3 mb-4">
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        <div class="stat-card">
+            <div class="stat-icon blue"><i class="fas fa-procedures"></i></div>
+            <div>
+                <div class="stat-value">@Model.TotalPatients</div>
+                <div class="stat-label">Total Patients</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        <div class="stat-card">
+            <div class="stat-icon green"><i class="fas fa-user-md"></i></div>
+            <div>
+                <div class="stat-value">@Model.TotalDoctors</div>
+                <div class="stat-label">Active Doctors</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        <div class="stat-card">
+            <div class="stat-icon orange"><i class="fas fa-calendar-check"></i></div>
+            <div>
+                <div class="stat-value">@Model.TodayAppointments</div>
+                <div class="stat-label">Today's Appts</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        <div class="stat-card">
+            <div class="stat-icon purple"><i class="fas fa-calendar-alt"></i></div>
+            <div>
+                <div class="stat-value">@Model.TotalAppointments</div>
+                <div class="stat-label">Total Appts</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        <div class="stat-card">
+            <div class="stat-icon teal"><i class="fas fa-rupee-sign"></i></div>
+            <div>
+                <div class="stat-value">₹@((Model.TotalRevenue/1000).ToString("N0"))K</div>
+                <div class="stat-label">Revenue</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        <div class="stat-card">
+            <div class="stat-icon red"><i class="fas fa-file-invoice-dollar"></i></div>
+            <div>
+                <div class="stat-value">@Model.PendingBills</div>
+                <div class="stat-label">Pending Bills</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- QUICK ACTIONS -->
+<div class="row g-3 mb-4">
+    @foreach (var qa in new[] {
+        new{icon="fa-user-md",label="Add Doctor",url="/Admin/CreateDoctor",color="primary"},
+        new{icon="fa-hospital",label="Departments",url="/Admin/Departments",color="success"},
+        new{icon="fa-pills",label="Medicines",url="/Admin/Medicines",color="warning"},
+        new{icon="fa-file-invoice-dollar",label="Billing",url="/Admin/Bills",color="danger"}
+    })
+    {
+        <div class="col-6 col-md-3">
+            <a href="@qa.url" class="card text-center p-3 text-decoration-none h-100"
+               style="border:2px solid #f0f4f8;transition:border-color .2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='#f0f4f8'">
+                <i class="fas @qa.icon fa-2x text-@qa.color mb-2"></i>
+                <div class="fw-semibold small" style="color:#1e3a5f">@qa.label</div>
+            </a>
+        </div>
+    }
+</div>
+
+<!-- RECENT APPOINTMENTS TABLE -->
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span><i class="fas fa-clock me-2"></i>Recent Appointments</span>
+        <a asp-controller="Admin" asp-action="Bills" class="btn btn-sm btn-outline-primary">View All Bills</a>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table mb-0 data-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Patient</th>
+                        <th>Doctor</th>
+                        <th>Department</th>
+                        <th>Date & Time</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var a in Model.RecentAppointments)
+                    {
+                        <tr>
+                            <td class="text-muted small">@a.AppointmentId</td>
+                            <td>
+                                <div class="fw-semibold">@a.PatientName</div>
+                                <div class="text-muted small">@a.PatientEmail</div>
+                            </td>
+                            <td>@a.DoctorName</td>
+                            <td><span class="badge bg-light text-dark">@a.DepartmentName</span></td>
+                            <td>
+                                <div>@a.AppointmentDate.ToString("dd MMM yyyy")</div>
+                                <div class="text-muted small">@a.TimeSlot</div>
+                            </td>
+                            <td>
+                                <span class="status-badge status-@a.Status.ToLower()">@a.Status</span>
+                            </td>
+                            <td>
+                                @if (a.HasBill)
+                                {
+                                    <a asp-controller="Admin" asp-action="Bills" class="btn btn-sm btn-outline-success">
+                                        <i class="fas fa-file-invoice-dollar"></i>
+                                    </a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
